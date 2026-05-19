@@ -67,58 +67,53 @@ ensure_no_elevated_privileges() {
 # Check if a required command is available
 # ---------------------------------------------------------------------------
 require_cmd() {
-    _cmd="$1"
-    if ! command -v "$_cmd" >/dev/null 2>&1; then
-        error "Required command '$_cmd' is not installed."
+    if ! command -v "$1" >/dev/null 2>&1; then
+        error "Required command '$1' is not installed."
         error "Please install it via your package manager and try again."
         exit 1
     fi
-    unset _cmd
 }
 
 # ---------------------------------------------------------------------------
 # Compute SHA-256 checksum of a file
 # ---------------------------------------------------------------------------
 sha256_file() {
-    _file="$1"
     if command -v sha256sum >/dev/null 2>&1; then
-        sha256sum "$_file" | awk '{print $1}'
+        sha256sum "$1" | awk '{print $1}'
     elif command -v shasum >/dev/null 2>&1; then
-        shasum -a 256 "$_file" | awk '{print $1}'
+        shasum -a 256 "$1" | awk '{print $1}'
     else
         error "Neither sha256sum nor shasum is available."
         exit 1
     fi
-    unset _file
 }
 
 # ---------------------------------------------------------------------------
 # Download a .ti file
 # ---------------------------------------------------------------------------
 download_ti() {
-    _term="$1"
-    _dest="$2"
-    _url="${BASE_URL}/terminfo/${_term}.ti"
+    _dt_term="$1"
+    _dt_dest="$2"
+    _dt_url="${BASE_URL}/terminfo/${_dt_term}.ti"
 
-    info "Downloading ${_term}.ti ..."
-    if ! $CURL -o "$_dest" "$_url"; then
-        error "Failed to download ${_url}"
-        error "Is the term '${_term}' available in the collection?"
+    info "Downloading ${_dt_term}.ti ..."
+    if ! $CURL -o "$_dt_dest" "$_dt_url"; then
+        error "Failed to download ${_dt_url}"
+        error "Is the term '${_dt_term}' available in the collection?"
         return 1
     fi
 
     # Sanity check: downloaded file should not be empty and should look like
     # a terminfo source (first line should contain the terminal name).
-    if [ ! -s "$_dest" ]; then
+    if [ ! -s "$_dt_dest" ]; then
         error "Downloaded file is empty."
         return 1
     fi
 
-    if ! grep -q "${_term}" "$_dest"; then
-        warn "Downloaded file does not mention '${_term}'; it may be invalid."
+    if ! grep -q "${_dt_term}" "$_dt_dest"; then
+        warn "Downloaded file does not mention '${_dt_term}'; it may be invalid."
     fi
 
-    unset _term _dest _url
     return 0
 }
 
@@ -126,38 +121,37 @@ download_ti() {
 # Verify checksum if available
 # ---------------------------------------------------------------------------
 verify_checksum() {
-    _term="$1"
-    _file="$2"
+    _vc_term="$1"
+    _vc_file="$2"
 
-    _checksum_url="${BASE_URL}/terminfo/checksums.txt"
-    _tmp_check="$(mktemp)"
-    # Clean up temp file on exit
-    _old_exit_trap="$(trap -p EXIT 2>/dev/null || true)"
-    trap 'rm -f "$_tmp_check"; eval "$_old_exit_trap"' EXIT
+    _vc_checksum_url="${BASE_URL}/terminfo/checksums.txt"
+    _vc_tmp_check="$(mktemp)"
+    # Stack temp cleanup: prepend our cleanup to existing EXIT trap
+    _vc_old_trap="$(trap | grep "^trap -- '.*' EXIT" | sed "s/^trap -- '//;s/' EXIT$//")"
+    trap 'rm -f "$_vc_tmp_check"; eval "$_vc_old_trap"' EXIT
 
     info "Fetching checksums ..."
-    if ! $CURL -o "$_tmp_check" "$_checksum_url" 2>/dev/null; then
+    if ! $CURL -o "$_vc_tmp_check" "$_vc_checksum_url" 2>/dev/null; then
         warn "Could not download checksums.txt; skipping verification."
         return 0
     fi
 
-    _expected="$(grep "^${_term}.ti" "$_tmp_check" | awk '{print $1}')"
-    if [ -z "$_expected" ]; then
-        warn "No checksum found for ${_term}.ti; skipping verification."
+    _vc_expected="$(grep "^${_vc_term}.ti" "$_vc_tmp_check" | awk '{print $1}')"
+    if [ -z "$_vc_expected" ]; then
+        warn "No checksum found for ${_vc_term}.ti; skipping verification."
         return 0
     fi
 
-    _actual="$(sha256_file "$_file")"
+    _vc_actual="$(sha256_file "$_vc_file")"
 
-    if [ "$_actual" != "$_expected" ]; then
-        error "Checksum mismatch for ${_term}.ti!"
-        error "  Expected: $_expected"
-        error "  Actual:   $_actual"
+    if [ "$_vc_actual" != "$_vc_expected" ]; then
+        error "Checksum mismatch for ${_vc_term}.ti!"
+        error "  Expected: $_vc_expected"
+        error "  Actual:   $_vc_actual"
         return 1
     fi
 
     info "Checksum verified OK."
-    unset _term _file _checksum_url _tmp_check _expected _actual _old_exit_trap
     return 0
 }
 
@@ -165,26 +159,22 @@ verify_checksum() {
 # Check if the terminfo entry is already installed and up to date
 # ---------------------------------------------------------------------------
 is_already_installed() {
-    _term="$1"
+    _iai_term="$1"
 
     # Check compiled database in ~/.terminfo
     if [ -d "$INSTALL_DIR" ]; then
         # terminfo stores files in letter-prefixed subdirectories
-        _first_char="$(printf '%s' "$_term" | cut -c1)"
-        if [ -f "$INSTALL_DIR/${_first_char}/${_term}" ]; then
-            unset _term _first_char
+        _iai_first="$(printf '%s' "$_iai_term" | cut -c1)"
+        if [ -f "$INSTALL_DIR/${_iai_first}/${_iai_term}" ]; then
             return 0
         fi
-        unset _first_char
     fi
 
     # Also check system-wide locations as a courtesy
-    if infocmp "$_term" >/dev/null 2>&1; then
-        unset _term
+    if infocmp "$_iai_term" >/dev/null 2>&1; then
         return 0
     fi
 
-    unset _term
     return 1
 }
 
@@ -192,13 +182,10 @@ is_already_installed() {
 # Compile and install the .ti file with tic
 # ---------------------------------------------------------------------------
 compile_and_install() {
-    _file="$1"
-
     info "Compiling with tic -x ..."
     mkdir -p "$INSTALL_DIR"
-    tic -x -o "$INSTALL_DIR" "$_file"
+    tic -x -o "$INSTALL_DIR" "$1"
     info "Installed to ${INSTALL_DIR}"
-    unset _file
 }
 
 # ---------------------------------------------------------------------------
