@@ -2,6 +2,52 @@
   'use strict';
 
   // --------------------------------------------------------
+  // Typewriter effect for terminal demo
+  // --------------------------------------------------------
+  function initTypewriter() {
+    const target = document.querySelector('.type-target');
+    if (!target) return;
+
+    const raw = target.dataset.terms || '';
+    const terms = raw.split(',').filter(Boolean);
+    if (!terms.length) return;
+
+    let termIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
+    const typeSpeed = 100;
+    const deleteSpeed = 50;
+    const pauseAfterType = 2000;
+    const pauseAfterDelete = 300;
+
+    function tick() {
+      const current = terms[termIndex];
+      if (isDeleting) {
+        charIndex--;
+        target.textContent = current.slice(0, charIndex);
+        if (charIndex <= 0) {
+          isDeleting = false;
+          termIndex = (termIndex + 1) % terms.length;
+          setTimeout(tick, pauseAfterDelete);
+          return;
+        }
+        setTimeout(tick, deleteSpeed);
+      } else {
+        charIndex++;
+        target.textContent = current.slice(0, charIndex);
+        if (charIndex >= current.length) {
+          isDeleting = true;
+          setTimeout(tick, pauseAfterType);
+          return;
+        }
+        setTimeout(tick, typeSpeed);
+      }
+    }
+
+    tick();
+  }
+
+  // --------------------------------------------------------
   // Copy button
   // --------------------------------------------------------
   function initCopyButtons() {
@@ -47,6 +93,7 @@
   // Init
   // --------------------------------------------------------
   document.addEventListener('DOMContentLoaded', () => {
+    initTypewriter();
     initCopyButtons();
     initSearch();
   });

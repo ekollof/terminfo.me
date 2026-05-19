@@ -322,6 +322,94 @@ a:hover {
 }
 
 /* ============================================
+   Problem section (terminal demo)
+   ============================================ */
+.problem-section {
+  padding: 0 1.25rem 2.5rem;
+}
+
+.problem-inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.terminal-box {
+  background: #0d1117;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.terminal-header {
+  background: var(--bg-elevated);
+  padding: 0.6rem 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.terminal-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.terminal-dot.red    { background: #e06c75; }
+.terminal-dot.yellow { background: #f0c040; }
+.terminal-dot.green  { background: #4cc38a; }
+
+.terminal-title {
+  margin-left: 0.5rem;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+
+.terminal-body {
+  padding: 1rem 1.1rem;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+.terminal-line {
+  margin-bottom: 0.4rem;
+}
+
+.terminal-line.error {
+  color: var(--danger);
+}
+
+.terminal-line.hint {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  margin-top: 0.75rem;
+  padding-top: 0.6rem;
+  border-top: 1px solid var(--border);
+}
+
+.terminal-prompt {
+  color: var(--accent);
+}
+
+.terminal-cmd {
+  color: var(--text-bright);
+}
+
+.type-cursor {
+  color: var(--danger);
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0; }
+}
+
+/* ============================================
    Quick-start cards
    ============================================ */
 .cards-section {
