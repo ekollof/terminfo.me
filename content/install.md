@@ -10,19 +10,19 @@ We provide a well-commented, idempotent Bash script that detects your `$TERM`, d
 ### Quick usage
 
 ```bash
-curl -fsSL https://terminfo.me/install.sh | bash
+curl -fsSL https://terminfo.me/install.sh | sh
 ```
 
 ### With explicit terminal name
 
 ```bash
-curl -fsSL https://terminfo.me/install.sh | bash -s -- alacritty
+curl -fsSL https://terminfo.me/install.sh | sh -s -- alacritty
 ```
 
 ### Verify checksums
 
 ```bash
-curl -fsSL https://terminfo.me/install.sh | bash -s -- --verify
+curl -fsSL https://terminfo.me/install.sh | sh -s -- --verify
 ```
 
 ### What the script does
@@ -39,6 +39,6 @@ curl -fsSL https://terminfo.me/install.sh | bash -s -- --verify
 - The script **never** runs `tic` with `sudo` or elevated privileges.
 - It only writes to `~/.terminfo` in your home directory.
 - It fails gracefully with clear error messages if a terminfo entry is missing.
-- You can inspect the script at any time before piping it to `bash`.
+- You can inspect the script at any time before piping it to `sh`.
 
 [View install.sh source on GitHub](https://github.com/ekollof/terminfo.me/blob/main/static/install.sh)
