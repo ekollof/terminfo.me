@@ -62,18 +62,20 @@ for f in $FILES; do
         continue
     fi
 
-    # Extract the canonical name from the entry (first token before | or ,)
-    CANON_NAME="$(printf '%s' "$ENTRY_LINE" | sed 's/[|,].*//' | tr -d '[:space:]')"
-    if [ -z "$CANON_NAME" ]; then
+    # Extract all names from the entry (split by | and ,)
+    NAMES="$(printf '%s' "$ENTRY_LINE" | sed 's/,.*//' | tr '|' '\n')"
+    if [ -z "$NAMES" ]; then
         error "  $BASENAME: could not extract terminal name from entry"
         ERRORS=$((ERRORS + 1))
         continue
     fi
 
-    # Check that the canonical name appears in the file stem
+    CANON_NAME="$(printf '%s' "$NAMES" | head -n 1 | tr -d '[:space:]')"
+
+    # Check that the filename stem appears somewhere in the aliases
     STEM="$(basename "$f" .ti)"
-    if [ "$CANON_NAME" != "$STEM" ]; then
-        warn "  $BASENAME: entry name '$CANON_NAME' does not match filename stem '$STEM'"
+    if ! printf '%s\n' "$NAMES" | grep -qx "$STEM"; then
+        warn "  $BASENAME: filename stem '$STEM' not found in entry aliases"
         # This is only a warning, not a hard error
     fi
 

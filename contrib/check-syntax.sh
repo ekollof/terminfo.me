@@ -61,9 +61,14 @@ for f in $FILES; do
 
     # Compile with tic -x to catch syntax errors.
     # We use a temporary output directory and discard the compiled output.
-    if tic -x -o "$COMPILE_DIR" "$f" 2>&1; then
+    # Filter out a known harmless warning about description fields in older tic.
+    OUTPUT="$(tic -x -o "$COMPILE_DIR" "$f" 2>&1)"
+    # Remove known harmless warnings
+    FILTERED="$(printf '%s\n' "$OUTPUT" | grep -v 'older tic versions may treat the description field as an alias' || true)"
+    if [ -z "$FILTERED" ]; then
         info "  OK: $BASENAME compiles cleanly"
     else
+        printf '%s\n' "$OUTPUT" >&2
         error "  FAILED: $BASENAME has syntax errors"
         ERRORS=$((ERRORS + 1))
     fi

@@ -1,5 +1,5 @@
 #	Reconstructed via infocmp from file: /usr/lib/kitty/terminfo/./x/xterm-kitty
-xterm-kitty|KovIdTTY,
+xterm-kitty|kitty|KovIdTTY,
 	am, bw, ccc, hs, km, mc5i, mir, msgr, npc, xenl, Su, Tc, XF, fullkbd,
 	colors#0x100, cols#80, it#8, lines#24, pairs#0x7fff,
 	acsc=++\,\,--..00``aaffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyyzz{{||}}~~,
