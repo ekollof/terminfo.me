@@ -34,7 +34,7 @@
                   <a href="{{ printf `terminfo/%s` .Name | relURL }}" download>Download</a>
                 </div>
               </div>
-              <div class="terminfo-preview">{{ range $preview }}{{ . }}{{ "\n" }}{{ end }}</div>
+              <pre class="terminfo-preview">{{ range $preview }}{{ . }}{{ "\n" }}{{ end }}</pre>
             </li>
           {{ end }}
         {{ end }}
