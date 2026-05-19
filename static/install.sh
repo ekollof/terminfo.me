@@ -1,11 +1,12 @@
-#!/usr/bin/env bash
+#!/bin/sh
 # -----------------------------------------------------------------------------
 # Terminfo Collection — install.sh
 # A safe, idempotent companion script for installing terminfo entries
 # from https://terminfo.me
+# POSIX-compliant so it runs under any /bin/sh (bash, dash, ksh, etc.)
 # -----------------------------------------------------------------------------
 
-set -euo pipefail
+set -eu
 
 # Base URL where raw .ti files are hosted.
 # Override with: export TERMINFO_BASE_URL="https://example.com/terminfo"
@@ -55,7 +56,7 @@ error() { printf '\033[1;31m[error]\033[0m %s\n' "$*" >&2; }
 # Ensure we never run as root / with sudo
 # ---------------------------------------------------------------------------
 ensure_no_elevated_privileges() {
-    if [[ "${EUID:-$(id -u)}" -eq 0 ]]; then
+    if [ "$(id -u)" -eq 0 ]; then
         error "This script must NOT be run as root or with sudo."
         error "It only writes to your home directory (~/.terminfo)."
         exit 1
@@ -66,55 +67,58 @@ ensure_no_elevated_privileges() {
 # Check if a required command is available
 # ---------------------------------------------------------------------------
 require_cmd() {
-    local cmd="$1"
-    if ! command -v "$cmd" >/dev/null 2>&1; then
-        error "Required command '$cmd' is not installed."
+    _cmd="$1"
+    if ! command -v "$_cmd" >/dev/null 2>&1; then
+        error "Required command '$_cmd' is not installed."
         error "Please install it via your package manager and try again."
         exit 1
     fi
+    unset _cmd
 }
 
 # ---------------------------------------------------------------------------
 # Compute SHA-256 checksum of a file
 # ---------------------------------------------------------------------------
 sha256_file() {
-    local file="$1"
+    _file="$1"
     if command -v sha256sum >/dev/null 2>&1; then
-        sha256sum "$file" | awk '{print $1}'
+        sha256sum "$_file" | awk '{print $1}'
     elif command -v shasum >/dev/null 2>&1; then
-        shasum -a 256 "$file" | awk '{print $1}'
+        shasum -a 256 "$_file" | awk '{print $1}'
     else
         error "Neither sha256sum nor shasum is available."
         exit 1
     fi
+    unset _file
 }
 
 # ---------------------------------------------------------------------------
 # Download a .ti file
 # ---------------------------------------------------------------------------
 download_ti() {
-    local term="$1"
-    local dest="$2"
-    local url="${BASE_URL}/terminfo/${term}.ti"
+    _term="$1"
+    _dest="$2"
+    _url="${BASE_URL}/terminfo/${_term}.ti"
 
-    info "Downloading ${term}.ti ..."
-    if ! $CURL -o "$dest" "$url"; then
-        error "Failed to download ${url}"
-        error "Is the term '${term}' available in the collection?"
+    info "Downloading ${_term}.ti ..."
+    if ! $CURL -o "$_dest" "$_url"; then
+        error "Failed to download ${_url}"
+        error "Is the term '${_term}' available in the collection?"
         return 1
     fi
 
     # Sanity check: downloaded file should not be empty and should look like
     # a terminfo source (first line should contain the terminal name).
-    if [[ ! -s "$dest" ]]; then
+    if [ ! -s "$_dest" ]; then
         error "Downloaded file is empty."
         return 1
     fi
 
-    if ! grep -q "${term}" "$dest"; then
-        warn "Downloaded file does not mention '${term}'; it may be invalid."
+    if ! grep -q "${_term}" "$_dest"; then
+        warn "Downloaded file does not mention '${_term}'; it may be invalid."
     fi
 
+    unset _term _dest _url
     return 0
 }
 
@@ -122,38 +126,38 @@ download_ti() {
 # Verify checksum if available
 # ---------------------------------------------------------------------------
 verify_checksum() {
-    local term="$1"
-    local file="$2"
+    _term="$1"
+    _file="$2"
 
-    local checksum_url="${BASE_URL}/terminfo/checksums.txt"
-    local tmp_check
-    tmp_check=$(mktemp)
-    trap 'rm -f "$tmp_check"' RETURN
+    _checksum_url="${BASE_URL}/terminfo/checksums.txt"
+    _tmp_check="$(mktemp)"
+    # Clean up temp file on exit
+    _old_exit_trap="$(trap -p EXIT 2>/dev/null || true)"
+    trap 'rm -f "$_tmp_check"; eval "$_old_exit_trap"' EXIT
 
     info "Fetching checksums ..."
-    if ! $CURL -o "$tmp_check" "$checksum_url" 2>/dev/null; then
+    if ! $CURL -o "$_tmp_check" "$_checksum_url" 2>/dev/null; then
         warn "Could not download checksums.txt; skipping verification."
         return 0
     fi
 
-    local expected
-    expected=$(grep "^${term}.ti" "$tmp_check" | awk '{print $1}')
-    if [[ -z "$expected" ]]; then
-        warn "No checksum found for ${term}.ti; skipping verification."
+    _expected="$(grep "^${_term}.ti" "$_tmp_check" | awk '{print $1}')"
+    if [ -z "$_expected" ]; then
+        warn "No checksum found for ${_term}.ti; skipping verification."
         return 0
     fi
 
-    local actual
-    actual=$(sha256_file "$file")
+    _actual="$(sha256_file "$_file")"
 
-    if [[ "$actual" != "$expected" ]]; then
-        error "Checksum mismatch for ${term}.ti!"
-        error "  Expected: $expected"
-        error "  Actual:   $actual"
+    if [ "$_actual" != "$_expected" ]; then
+        error "Checksum mismatch for ${_term}.ti!"
+        error "  Expected: $_expected"
+        error "  Actual:   $_actual"
         return 1
     fi
 
     info "Checksum verified OK."
+    unset _term _file _checksum_url _tmp_check _expected _actual _old_exit_trap
     return 0
 }
 
@@ -161,23 +165,26 @@ verify_checksum() {
 # Check if the terminfo entry is already installed and up to date
 # ---------------------------------------------------------------------------
 is_already_installed() {
-    local term="$1"
+    _term="$1"
 
     # Check compiled database in ~/.terminfo
-    if [[ -d "$INSTALL_DIR" ]]; then
+    if [ -d "$INSTALL_DIR" ]; then
         # terminfo stores files in letter-prefixed subdirectories
-        local first_char
-        first_char=$(printf '%s' "$term" | cut -c1)
-        if [[ -f "$INSTALL_DIR/${first_char}/${term}" ]]; then
+        _first_char="$(printf '%s' "$_term" | cut -c1)"
+        if [ -f "$INSTALL_DIR/${_first_char}/${_term}" ]; then
+            unset _term _first_char
             return 0
         fi
+        unset _first_char
     fi
 
     # Also check system-wide locations as a courtesy
-    if infocmp "$term" >/dev/null 2>&1; then
+    if infocmp "$_term" >/dev/null 2>&1; then
+        unset _term
         return 0
     fi
 
+    unset _term
     return 1
 }
 
@@ -185,23 +192,24 @@ is_already_installed() {
 # Compile and install the .ti file with tic
 # ---------------------------------------------------------------------------
 compile_and_install() {
-    local file="$1"
+    _file="$1"
 
     info "Compiling with tic -x ..."
     mkdir -p "$INSTALL_DIR"
-    tic -x -o "$INSTALL_DIR" "$file"
+    tic -x -o "$INSTALL_DIR" "$_file"
     info "Installed to ${INSTALL_DIR}"
+    unset _file
 }
 
 # ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
 main() {
-    local term=""
-    local dry_run=0
+    _term=""
+    _dry_run=0
 
     # Parse arguments
-    while [[ $# -gt 0 ]]; do
+    while [ "$#" -gt 0 ]; do
         case "$1" in
             -h|--help)
                 usage
@@ -212,7 +220,7 @@ main() {
                 shift
                 ;;
             --dry-run)
-                dry_run=1
+                _dry_run=1
                 shift
                 ;;
             -*)
@@ -221,23 +229,23 @@ main() {
                 exit 1
                 ;;
             *)
-                term="$1"
+                _term="$1"
                 shift
                 ;;
         esac
     done
 
     # Determine target terminal name
-    if [[ -z "$term" ]]; then
-        term="${TERM:-}"
-        if [[ -z "$term" ]]; then
+    if [ -z "$_term" ]; then
+        _term="${TERM:-}"
+        if [ -z "$_term" ]; then
             error "\$TERM is not set. Please provide a terminal name explicitly."
             usage
             exit 1
         fi
-        info "Detected terminal: \$TERM=${term}"
+        info "Detected terminal: \$TERM=${_term}"
     else
-        info "Requested terminal: ${term}"
+        info "Requested terminal: ${_term}"
     fi
 
     # Safety checks
@@ -246,27 +254,31 @@ main() {
     require_cmd tic
 
     # Check if already installed
-    if is_already_installed "$term"; then
-        info "Terminfo for '${term}' appears to already be installed."
-        read -r -p "Re-install? [y/N] " confirm </dev/tty
-        if [[ ! "$confirm" =~ ^[Yy]$ ]]; then
-            info "Skipping installation."
-            exit 0
-        fi
+    if is_already_installed "$_term"; then
+        info "Terminfo for '${_term}' appears to already be installed."
+        printf '%s' "Re-install? [y/N] "
+        read -r _confirm </dev/tty
+        case "$_confirm" in
+            [Yy])
+                ;;
+            *)
+                info "Skipping installation."
+                exit 0
+                ;;
+        esac
     fi
 
     # Prepare temporary file
-    local tmpfile
-    tmpfile=$(mktemp "${TMPDIR:-/tmp}/terminfo-${term}-XXXXXX.ti")
-    trap 'rm -f "$tmpfile"' EXIT
+    _tmpfile="$(mktemp "${TMPDIR:-/tmp}/terminfo-${_term}-XXXXXX.ti")"
+    trap 'rm -f "$_tmpfile"' EXIT
 
     # Download
-    if [[ "$dry_run" -eq 1 ]]; then
-        info "[dry-run] Would download ${BASE_URL}/terminfo/${term}.ti"
+    if [ "$_dry_run" -eq 1 ]; then
+        info "[dry-run] Would download ${BASE_URL}/terminfo/${_term}.ti"
     else
-        if ! download_ti "$term" "$tmpfile"; then
+        if ! download_ti "$_term" "$_tmpfile"; then
             error "Download failed. Common causes:"
-            error "  - The terminal '${term}' is not yet in the collection."
+            error "  - The terminal '${_term}' is not yet in the collection."
             error "  - Network connectivity issues."
             error "  - BASE_URL is misconfigured."
             exit 1
@@ -274,23 +286,23 @@ main() {
     fi
 
     # Verify checksum (optional)
-    if [[ "$VERIFY_CHECKSUMS" -eq 1 ]]; then
-        if [[ "$dry_run" -eq 1 ]]; then
+    if [ "$VERIFY_CHECKSUMS" -eq 1 ]; then
+        if [ "$_dry_run" -eq 1 ]; then
             info "[dry-run] Would verify SHA-256 checksum."
         else
-            if ! verify_checksum "$term" "$tmpfile"; then
+            if ! verify_checksum "$_term" "$_tmpfile"; then
                 exit 1
             fi
         fi
     fi
 
     # Compile and install
-    if [[ "$dry_run" -eq 1 ]]; then
-        info "[dry-run] Would run: tic -x -o ${INSTALL_DIR} ${tmpfile}"
+    if [ "$_dry_run" -eq 1 ]; then
+        info "[dry-run] Would run: tic -x -o ${INSTALL_DIR} ${_tmpfile}"
         info "[dry-run] Done."
     else
-        compile_and_install "$tmpfile"
-        info "Success! '${term}' terminfo is now installed in ${INSTALL_DIR}"
+        compile_and_install "$_tmpfile"
+        info "Success! '${_term}' terminfo is now installed in ${INSTALL_DIR}"
         info "You may need to restart your terminal or re-SSH for changes to take full effect."
     fi
 }
