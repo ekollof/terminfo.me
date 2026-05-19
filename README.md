@@ -2,7 +2,7 @@
 
 A curated, public collection of high-quality terminfo source files (`.ti`) for modern terminal emulators.
 
-**Live site:** https://yourusername.github.io/terminfo-collection
+**Live site:** https://terminfo.me
 
 ## What is this?
 
@@ -22,8 +22,8 @@ This repository hosts official `.ti` source files for popular terminals, makes t
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/terminfo-collection.git
-cd terminfo-collection
+git clone https://github.com/ekollof/terminfo.me.git
+cd terminfo.me
 
 # Run the Hugo dev server
 hugo server --buildDrafts

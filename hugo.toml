@@ -1,4 +1,4 @@
-baseURL = '/'
+baseURL = 'https://terminfo.me/'
 locale = 'en-us'
 title = 'Terminfo Collection'
 theme = 'terminfo'
@@ -6,8 +6,8 @@ theme = 'terminfo'
 [params]
   description = "A curated, public collection of high-quality terminfo source files. Find and install the perfect terminfo entry for your terminal."
   author = "Terminfo Collection Contributors"
-  repo = "https://github.com/yourusername/terminfo-collection"
-  domain = "https://terminfo.example.com"
+  repo = "https://github.com/ekollof/terminfo.me"
+  domain = "https://terminfo.me"
 
 [menu]
   [[menu.main]]

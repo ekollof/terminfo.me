@@ -2,14 +2,14 @@
 # -----------------------------------------------------------------------------
 # Terminfo Collection — install.sh
 # A safe, idempotent companion script for installing terminfo entries
-# from https://terminfo.example.com
+# from https://terminfo.me
 # -----------------------------------------------------------------------------
 
 set -euo pipefail
 
 # Base URL where raw .ti files are hosted.
 # Override with: export TERMINFO_BASE_URL="https://example.com/terminfo"
-BASE_URL="${TERMINFO_BASE_URL:-https://terminfo.example.com}"
+BASE_URL="${TERMINFO_BASE_URL:-https://terminfo.me}"
 
 # Where to install compiled terminfo entries.
 INSTALL_DIR="${HOME}/.terminfo"

@@ -20,7 +20,7 @@
 
     // If the user is actually viewing in a terminal-like browser we can't read $TERM,
     // so we show a generic fallback and mention detection.
-    const oneLiner = `curl -fsSL https://yourusername.github.io/terminfo-collection/install.sh | bash -s -- ${term}`;
+    const oneLiner = `curl -fsSL https://terminfo.me/install.sh | bash -s -- ${term}`;
     if (code) code.textContent = oneLiner;
     if (label) label.textContent = `Detected: ${term}`;
   }

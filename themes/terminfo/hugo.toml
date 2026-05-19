@@ -1,4 +1,4 @@
-baseURL = 'https://example.org/'
+baseURL = 'https://terminfo.me/'
 locale = 'en-US'
 title = 'My New Hugo Project'
 

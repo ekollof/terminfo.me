@@ -10,19 +10,19 @@ We provide a well-commented, idempotent Bash script that detects your `$TERM`, d
 ### Quick usage
 
 ```bash
-curl -fsSL https://terminfo.example.com/install.sh | bash
+curl -fsSL https://terminfo.me/install.sh | bash
 ```
 
 ### With explicit terminal name
 
 ```bash
-curl -fsSL https://terminfo.example.com/install.sh | bash -s -- alacritty
+curl -fsSL https://terminfo.me/install.sh | bash -s -- alacritty
 ```
 
 ### Verify checksums
 
 ```bash
-curl -fsSL https://terminfo.example.com/install.sh | bash -s -- --verify
+curl -fsSL https://terminfo.me/install.sh | bash -s -- --verify
 ```
 
 ### What the script does
@@ -41,4 +41,4 @@ curl -fsSL https://terminfo.example.com/install.sh | bash -s -- --verify
 - It fails gracefully with clear error messages if a terminfo entry is missing.
 - You can inspect the script at any time before piping it to `bash`.
 
-[View install.sh source on GitHub](https://github.com/yourusername/terminfo-collection/blob/main/static/install.sh)
+[View install.sh source on GitHub](https://github.com/ekollof/terminfo.me/blob/main/static/install.sh)
