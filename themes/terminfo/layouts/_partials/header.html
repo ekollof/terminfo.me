@@ -7,5 +7,6 @@
     {{ range site.Menus.main }}
       <a class="nav-link{{ if $.IsMenuCurrent .Menu . }} active{{ end }}" href="{{ .URL | relURL }}">{{ .Name }}</a>
     {{ end }}
+    <a class="nav-btn" href="https://ko-fi.com/andrath" target="_blank" rel="noopener">Ko-fi</a>
   </nav>
 </div>
