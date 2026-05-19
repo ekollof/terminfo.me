@@ -48,6 +48,19 @@ EOF
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
+
+# Map common $TERM values to the filename used in the collection.
+resolve_term() {
+    case "$1" in
+        xterm-kitty)
+            printf '%s' "kitty"
+            ;;
+        *)
+            printf '%s' "$1"
+            ;;
+    esac
+}
+
 info()  { printf '\033[1;32m[info]\033[0m  %s\n' "$*"; }
 warn()  { printf '\033[1;33m[warn]\033[0m  %s\n' "$*" >&2; }
 error() { printf '\033[1;31m[error]\033[0m %s\n' "$*" >&2; }
@@ -235,6 +248,8 @@ main() {
         info "Requested terminal: ${_term}"
     fi
 
+    _term_file="$(resolve_term "$_term")"
+
     # Safety checks
     ensure_no_elevated_privileges
     require_cmd curl
@@ -256,16 +271,16 @@ main() {
     fi
 
     # Prepare temporary file
-    _tmpfile="$(mktemp "${TMPDIR:-/tmp}/terminfo-${_term}-XXXXXX.ti")"
+    _tmpfile="$(mktemp "${TMPDIR:-/tmp}/terminfo-${_term_file}-XXXXXX.ti")"
     trap 'rm -f "$_tmpfile"' EXIT
 
     # Download
     if [ "$_dry_run" -eq 1 ]; then
-        info "[dry-run] Would download ${BASE_URL}/terminfo/${_term}.ti"
+        info "[dry-run] Would download ${BASE_URL}/terminfo/${_term_file}.ti"
     else
-        if ! download_ti "$_term" "$_tmpfile"; then
+        if ! download_ti "$_term_file" "$_tmpfile"; then
             error "Download failed. Common causes:"
-            error "  - The terminal '${_term}' is not yet in the collection."
+            error "  - The terminal '${_term_file}' is not yet in the collection."
             error "  - Network connectivity issues."
             error "  - BASE_URL is misconfigured."
             exit 1
@@ -277,7 +292,7 @@ main() {
         if [ "$_dry_run" -eq 1 ]; then
             info "[dry-run] Would verify SHA-256 checksum."
         else
-            if ! verify_checksum "$_term" "$_tmpfile"; then
+            if ! verify_checksum "$_term_file" "$_tmpfile"; then
                 exit 1
             fi
         fi
