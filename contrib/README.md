@@ -4,6 +4,18 @@ These POSIX-compliant shell scripts help maintainers and contributors validate t
 
 All scripts can be run from the repository root.
 
+## Pre-commit Hook
+
+Install the pre-commit hook to run all checks automatically before every commit:
+
+```sh
+# One-time setup
+cp contrib/pre-commit .git/hooks/pre-commit
+chmod +x .git/hooks/pre-commit
+```
+
+The hook runs `run-all-checks.sh` on any staged `.ti` files (or all checks if none are staged).
+
 ## Scripts
 
 ### `run-all-checks.sh`

@@ -1,0 +1,23 @@
+#!/bin/sh
+# ------------------------------------------------------------------------------
+# Pre-commit hook: validate terminfo files before commit
+# ------------------------------------------------------------------------------
+# Runs contrib validation checks on staged .ti files and verifies checksums.
+# Install: cp contrib/pre-commit .git/hooks/pre-commit && chmod +x .git/hooks/pre-commit
+# ------------------------------------------------------------------------------
+
+set -e
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+CONTRIB_DIR="$REPO_ROOT/contrib"
+
+# Gather staged .ti files
+STAGED_FILES="$(git diff --cached --name-only --diff-filter=ACM | grep '^static/terminfo/.*\.ti$' || true)"
+
+if [ -z "$STAGED_FILES" ]; then
+    # No .ti files staged; only run checksum check in case checksums.txt changed
+    exec "$CONTRIB_DIR/run-all-checks.sh"
+fi
+
+# Run full suite (checks staged files + global checksum check)
+exec "$CONTRIB_DIR/run-all-checks.sh" $STAGED_FILES
