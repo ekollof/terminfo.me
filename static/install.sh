@@ -198,6 +198,34 @@ is_already_installed() {
 }
 
 # ---------------------------------------------------------------------------
+# Create a terminfo alias entry so the original $TERM name resolves
+# ---------------------------------------------------------------------------
+ensure_term_alias() {
+    _ea_term="$1"
+    _ea_file_term="$2"
+
+    if [ "$_ea_term" = "$_ea_file_term" ]; then
+        return 0
+    fi
+
+    _ea_term_first="$(printf '%s' "$_ea_term" | cut -c1)"
+    _ea_file_first="$(printf '%s' "$_ea_file_term" | cut -c1)"
+
+    _ea_term_path="$INSTALL_DIR/$_ea_term_first/$_ea_term"
+    _ea_file_path="$INSTALL_DIR/$_ea_file_first/$_ea_file_term"
+
+    if [ -e "$_ea_term_path" ]; then
+        return 0
+    fi
+
+    if [ -e "$_ea_file_path" ]; then
+        mkdir -p "$INSTALL_DIR/$_ea_term_first"
+        ln -s "$_ea_file_path" "$_ea_term_path"
+        info "Created alias '$_ea_term' -> '$_ea_file_term' for terminfo lookup."
+    fi
+}
+
+# ---------------------------------------------------------------------------
 # Compile and install the .ti file with tic
 # ---------------------------------------------------------------------------
 compile_and_install() {
@@ -310,6 +338,7 @@ main() {
         info "[dry-run] Done."
     else
         compile_and_install "$_tmpfile"
+        ensure_term_alias "$_term" "$_term_file"
         info "Success! '${_term}' terminfo is now installed in ${INSTALL_DIR}"
         info "You may need to restart your terminal or re-SSH for changes to take full effect."
     fi
