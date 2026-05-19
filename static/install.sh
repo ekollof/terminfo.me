@@ -55,6 +55,9 @@ resolve_term() {
         xterm-kitty)
             printf '%s' "kitty"
             ;;
+        xterm-ghostty)
+            printf '%s' "ghostty"
+            ;;
         *)
             printf '%s' "$1"
             ;;
