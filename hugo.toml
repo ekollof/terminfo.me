@@ -1,0 +1,36 @@
+baseURL = '/'
+locale = 'en-us'
+title = 'Terminfo Collection'
+theme = 'terminfo'
+
+[params]
+  description = "A curated, public collection of high-quality terminfo source files. Find and install the perfect terminfo entry for your terminal."
+  author = "Terminfo Collection Contributors"
+  repo = "https://github.com/yourusername/terminfo-collection"
+  domain = "https://terminfo.example.com"
+
+[menu]
+  [[menu.main]]
+    name = 'Home'
+    pageRef = '/'
+    weight = 10
+  [[menu.main]]
+    name = 'Browse Terminfo'
+    pageRef = '/terminfo'
+    weight = 20
+  [[menu.main]]
+    name = 'Install Script'
+    pageRef = '/install'
+    weight = 30
+  [[menu.main]]
+    name = 'Contribute'
+    pageRef = '/contribute'
+    weight = 40
+
+[imaging]
+  quality = 75
+
+[outputs]
+  home = ['HTML']
+  section = ['HTML']
+  page = ['HTML']

@@ -1,0 +1,89 @@
+{{ define "main" }}
+<section class="hero">
+  <div class="hero-inner">
+    <h1>A curated collection of high-quality terminfo entries.</h1>
+    <p class="lead">
+      Missing capabilities, broken colors, or strange key behavior? Find the correct
+      terminfo source for your terminal and install it in seconds with a single command.
+    </p>
+
+    <div class="install-box" id="install-box">
+      <div class="install-label">
+        <span class="dot"></span>
+        <span class="install-label-text">One-liner install</span>
+      </div>
+      <div class="code-block">
+        <code>curl -fsSL {{ site.Params.domain }}/install.sh | bash</code>
+        <button class="copy-btn" type="button" aria-label="Copy to clipboard">Copy</button>
+      </div>
+      <p class="install-meta">
+        The script detects your <code>$TERM</code>, downloads the matching entry, and compiles it with <code>tic</code>.
+        <a href="{{ `/install` | relURL }}">Learn more &rarr;</a>
+      </p>
+    </div>
+
+    <div class="hero-actions">
+      <a href="{{ `terminfo` | relURL }}" class="btn btn-primary">Browse all entries</a>
+      <a href="{{ `/contribute` | relURL }}" class="btn btn-ghost">Contribute an entry</a>
+    </div>
+  </div>
+</section>
+
+<section class="cards-section">
+  <div class="cards-inner">
+    <h2 class="section-title"><span>&rsaquo;</span> Quick start</h2>
+    <div class="cards-grid">
+      <div class="card">
+        <h3>1. Find your terminal</h3>
+        <p>Search the browsable index for your emulator (e.g., Alacritty, Kitty, WezTerm).</p>
+      </div>
+      <div class="card">
+        <h3>2. Copy the one-liner</h3>
+        <p>Paste the install command. It auto-detects your $TERM and handles the rest.</p>
+      </div>
+      <div class="card">
+        <h3>3. Done</h3>
+        <p>The script downloads the .ti source, runs tic -x, and installs to ~/.terminfo safely.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="browse-section">
+  <div class="browse-inner">
+    <h2 class="section-title"><span>&rsaquo;</span> Available entries</h2>
+    <input
+      type="search"
+      id="terminfo-search"
+      class="search-bar"
+      placeholder="Search terminfo entries..."
+      aria-label="Search terminfo entries"
+      autocomplete="off"
+    >
+    <ul class="terminfo-list" id="terminfo-list">
+      {{ $dir := "static/terminfo" }}
+      {{ if (fileExists $dir) }}
+        {{ range (readDir $dir) }}
+          {{ if strings.HasSuffix .Name ".ti" }}
+            {{ $path := printf "static/terminfo/%s" .Name }}
+            {{ $content := readFile $path }}
+            {{ $lines := split $content "\n" }}
+            {{ $preview := first 6 $lines }}
+            {{ $name := strings.TrimSuffix ".ti" .Name }}
+            <li class="terminfo-item" data-name="{{ $name | lower }}">
+              <div class="terminfo-header">
+                <span class="terminfo-name">{{ $name }}</span>
+                <div class="terminfo-meta">
+                  <span class="badge">{{ len $lines }} lines</span>
+                  <a href="{{ printf `terminfo/%s` .Name | relURL }}" download>Download .ti</a>
+                </div>
+              </div>
+              <div class="terminfo-preview">{{ range $preview }}{{ . }}{{ "\n" }}{{ end }}</div>
+            </li>
+          {{ end }}
+        {{ end }}
+      {{ end }}
+    </ul>
+  </div>
+</section>
+{{ end }}

@@ -1,0 +1,11 @@
+<div class="header-inner">
+  <a class="logo" href="{{ `/` | relURL }}">
+    <span class="logo-prompt">$</span>
+    <span class="logo-text">terminfo</span>
+  </a>
+  <nav class="main-nav" aria-label="Main">
+    {{ range site.Menus.main }}
+      <a class="nav-link{{ if $.IsMenuCurrent .Menu . }} active{{ end }}" href="{{ .URL | relURL }}">{{ .Name }}</a>
+    {{ end }}
+  </nav>
+</div>

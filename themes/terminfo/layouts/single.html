@@ -1,0 +1,13 @@
+{{ define "main" }}
+<section class="content-section">
+  <div class="content-inner">
+    <div class="raw-header">
+      <h1>{{ .Title }}</h1>
+      <div class="raw-actions">
+        <a class="btn btn-ghost" href="{{ .Params.download | default (printf `/terminfo/%s.ti` .Title) | relURL }}" download>Download .ti</a>
+      </div>
+    </div>
+    {{ .Content }}
+  </div>
+</section>
+{{ end }}

@@ -1,0 +1,47 @@
+{{ define "main" }}
+<section class="content-section">
+  <div class="content-inner">
+    <h1>{{ .Title | default "Browse Terminfo Entries" }}</h1>
+    {{ .Content }}
+
+    <input
+      type="search"
+      id="terminfo-search"
+      class="search-bar"
+      placeholder="Search terminfo entries..."
+      aria-label="Search terminfo entries"
+      autocomplete="off"
+      style="margin-top: 1rem;"
+    >
+
+    <ul class="terminfo-list" id="terminfo-list" style="margin-top: 1.25rem;">
+      {{ $dir := "static/terminfo" }}
+      {{ if (fileExists $dir) }}
+        {{ range (readDir $dir) }}
+          {{ if strings.HasSuffix .Name ".ti" }}
+            {{ $path := printf "static/terminfo/%s" .Name }}
+            {{ $content := readFile $path }}
+            {{ $lines := split $content "\n" }}
+            {{ $preview := first 8 $lines }}
+            {{ $name := strings.TrimSuffix ".ti" .Name }}
+            <li class="terminfo-item" data-name="{{ $name | lower }}">
+              <div class="terminfo-header">
+                <a class="terminfo-name" href="{{ printf `terminfo/%s` .Name | relURL }}">{{ $name }}</a>
+                <div class="terminfo-meta">
+                  <span>{{ len $lines }} lines</span>
+                  <span>&middot;</span>
+                  <span>{{ div .Size 1024 }} KB</span>
+                  <a href="{{ printf `terminfo/%s` .Name | relURL }}" download>Download</a>
+                </div>
+              </div>
+              <div class="terminfo-preview">{{ range $preview }}{{ . }}{{ "\n" }}{{ end }}</div>
+            </li>
+          {{ end }}
+        {{ end }}
+      {{ else }}
+        <p>No terminfo entries found yet.</p>
+      {{ end }}
+    </ul>
+  </div>
+</section>
+{{ end }}
