@@ -58,6 +58,9 @@ resolve_term() {
         xterm-ghostty)
             printf '%s' "ghostty"
             ;;
+        stterm-256color)
+            printf '%s' "st-256color"
+            ;;
         *)
             printf '%s' "$1"
             ;;
