@@ -127,6 +127,21 @@ else
     warn "Skipping install.sh check (file or data missing)"
 fi
 
+# Verify static/install.json is in sync with data/install.json
+if [ -f "$INSTALL_DATA" ] && [ -f "static/install.json" ]; then
+    if ! cmp -s "$INSTALL_DATA" "static/install.json"; then
+        error "static/install.json is out of sync with data/install.json"
+        error "Regenerate with: contrib/update-install-checksum.sh"
+        ERRORS=$((ERRORS + 1))
+    else
+        info "  OK: static/install.json in sync"
+    fi
+elif [ -f "$INSTALL_DATA" ] && [ ! -f "static/install.json" ]; then
+    error "static/install.json is missing (needed for production self-check)"
+    error "Regenerate with: contrib/update-install-checksum.sh"
+    ERRORS=$((ERRORS + 1))
+fi
+
 if [ "$ERRORS" -gt 0 ]; then
     error "$ERRORS checksum issue(s) found."
     error "Regenerate .ti checksums with: cd $TERMINFO_DIR && sha256sum *.ti > checksums.txt"

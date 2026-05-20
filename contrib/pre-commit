@@ -18,10 +18,10 @@ STAGED_INSTALL="$(git diff --cached --name-only --diff-filter=ACM | grep '^stati
 
 # Auto-update install checksum if install.sh is staged
 if [ -n "$STAGED_INSTALL" ]; then
-    printf '[pre-commit] install.sh staged — updating data/install.json\n'
+    printf '[pre-commit] install.sh staged — updating install.json\n'
     "$CONTRIB_DIR/update-install-checksum.sh"
-    git add "$REPO_ROOT/data/install.json"
-    printf '[pre-commit] data/install.json updated and staged\n'
+    git add "$REPO_ROOT/data/install.json" "$REPO_ROOT/static/install.json"
+    printf '[pre-commit] install.json updated and staged\n'
 fi
 
 if [ -z "$STAGED_TI" ]; then

@@ -130,7 +130,7 @@ self_check() {
     fi
 
     # Download checksum data
-    _sc_json_url="${BASE_URL}/data/install.json"
+    _sc_json_url="${BASE_URL}/install.json"
     info "Fetching checksum ..."
     if ! $CURL -o "$_sc_tmp_json" "$_sc_json_url" 2>/dev/null; then
         error "Failed to download checksum data from ${_sc_json_url}"

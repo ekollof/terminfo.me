@@ -15,6 +15,7 @@ PROG="$(basename "$0")"
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 INSTALL_SH="$REPO_ROOT/static/install.sh"
 DATA_FILE="$REPO_ROOT/data/install.json"
+STATIC_FILE="$REPO_ROOT/static/install.json"
 
 info()  { printf '[%s] %s\n' "$PROG" "$*"; }
 error() { printf '[%s] ERROR: %s\n' "$PROG" "$*" >&2; }
@@ -50,6 +51,9 @@ cat > "$DATA_FILE" <<EOF
   "updated": "$DATE"
 }
 EOF
+
+# Also copy to static/ so it's served on the site
+cp "$DATA_FILE" "$STATIC_FILE"
 
 info "Updated $DATA_FILE"
 info "  sha256: $SUM"
