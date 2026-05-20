@@ -31,9 +31,10 @@ Usage: $(basename "$0") [OPTIONS] [TERMINAL_NAME]
 Install a terminfo entry from the Terminfo Collection into ~/.terminfo.
 
 Options:
-  -h, --help     Show this help message and exit
-  -v, --verify   Enable SHA-256 checksum verification
-  --dry-run      Show what would be done without making changes
+  -h, --help              Show this help message and exit
+  -v, --verify            Enable SHA-256 checksum verification
+  --dry-run               Show what would be done without making changes
+  --skip-self-check       Skip script self-verification (not recommended)
 
 Arguments:
   TERMINAL_NAME  Name of the terminal to install (defaults to \$TERM)
@@ -105,6 +106,63 @@ sha256_file() {
         error "Neither sha256sum nor shasum is available."
         exit 1
     fi
+}
+
+# ---------------------------------------------------------------------------
+# Self-check: download this script and verify its SHA-256, then re-exec
+# ---------------------------------------------------------------------------
+self_check() {
+    info "Performing self-check ..."
+
+    _sc_tmp_install="$(mktemp "${TMPDIR:-/tmp}/install.XXXXXX.sh")"
+    _sc_tmp_json="$(mktemp "${TMPDIR:-/tmp}/install.XXXXXX.json")"
+    # Prepend cleanup to existing EXIT trap
+    _sc_old_trap="$(trap | grep "^trap -- '.*' EXIT" | sed "s/^trap -- '//;s/' EXIT$//")"
+    trap 'rm -f "$_sc_tmp_install" "$_sc_tmp_json"; eval "$_sc_old_trap"' EXIT
+
+    # Download this script
+    _sc_script_url="${BASE_URL}/install.sh"
+    info "Downloading script for verification ..."
+    if ! $CURL -o "$_sc_tmp_install" "$_sc_script_url"; then
+        error "Failed to download script from ${_sc_script_url}"
+        error "Self-check cannot proceed."
+        exit 1
+    fi
+
+    # Download checksum data
+    _sc_json_url="${BASE_URL}/data/install.json"
+    info "Fetching checksum ..."
+    if ! $CURL -o "$_sc_tmp_json" "$_sc_json_url" 2>/dev/null; then
+        error "Failed to download checksum data from ${_sc_json_url}"
+        error "Self-check cannot proceed."
+        exit 1
+    fi
+
+    # Extract expected sha256 from JSON
+    _sc_expected="$(sed -n 's/.*"sha256"[ ]*:[ ]*"\([^"]*\)".*/\1/p' "$_sc_tmp_json")"
+    if [ -z "$_sc_expected" ]; then
+        error "Could not parse SHA-256 from checksum data."
+        exit 1
+    fi
+
+    # Compute actual sha256 of downloaded script
+    _sc_actual="$(sha256_file "$_sc_tmp_install")"
+
+    if [ "$_sc_actual" != "$_sc_expected" ]; then
+        error "Self-check FAILED: script checksum mismatch!"
+        error "  Expected: $_sc_expected"
+        error "  Actual:   $_sc_actual"
+        error ""
+        error "The downloaded script does not match the published checksum."
+        error "This could indicate a corrupted download or tampering."
+        error ""
+        error "You can bypass this check (not recommended) by running:"
+        error "  sh install.sh --skip-self-check"
+        exit 1
+    fi
+
+    info "Self-check passed. Re-executing verified copy ..."
+    exec /bin/sh "$_sc_tmp_install" --skip-self-check "$@"
 }
 
 # ---------------------------------------------------------------------------
@@ -242,6 +300,19 @@ main() {
     _term=""
     _dry_run=0
 
+    # Check if we should skip self-check
+    _skip_self=0
+    for _arg in "$@"; do
+        if [ "$_arg" = "--skip-self-check" ]; then
+            _skip_self=1
+            break
+        fi
+    done
+
+    if [ "$_skip_self" -eq 0 ]; then
+        self_check "$@"
+    fi
+
     # Parse arguments
     while [ "$#" -gt 0 ]; do
         case "$1" in
@@ -255,6 +326,9 @@ main() {
                 ;;
             --dry-run)
                 _dry_run=1
+                shift
+                ;;
+            --skip-self-check)
                 shift
                 ;;
             -*)
