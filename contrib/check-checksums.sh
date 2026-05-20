@@ -1,13 +1,14 @@
 #!/bin/sh
 # -----------------------------------------------------------------------------
-# check-checksums.sh — Verify checksums.txt against actual .ti files
+# check-checksums.sh — Verify checksums.txt against actual .ti files + install.sh
 # -----------------------------------------------------------------------------
 # Usage:
 #   contrib/check-checksums.sh
 #
 # Compares SHA-256 checksums in static/terminfo/checksums.txt against
 # the current contents of all .ti files in static/terminfo/.
-# Also reports any .ti files missing from checksums.txt.
+# Also verifies static/install.sh against data/install.json.
+# Reports any .ti files missing from checksums.txt.
 # -----------------------------------------------------------------------------
 
 set -e
@@ -15,21 +16,13 @@ set -e
 PROG="$(basename "$0")"
 TERMINFO_DIR="${TERMINFO_DIR:-static/terminfo}"
 CHECKSUM_FILE="$TERMINFO_DIR/checksums.txt"
+INSTALL_SH="static/install.sh"
+INSTALL_DATA="data/install.json"
 ERRORS=0
 
 info()  { printf '[%s] %s\n' "$PROG" "$*"; }
 error() { printf '[%s] ERROR: %s\n' "$PROG" "$*" >&2; }
 warn()  { printf '[%s] WARN: %s\n' "$PROG" "$*" >&2; }
-
-if [ ! -d "$TERMINFO_DIR" ]; then
-    error "Directory not found: $TERMINFO_DIR"
-    exit 1
-fi
-
-if [ ! -f "$CHECKSUM_FILE" ]; then
-    error "Checksum file not found: $CHECKSUM_FILE"
-    exit 1
-fi
 
 # Determine sha256 command
 if command -v sha256sum >/dev/null 2>&1; then
@@ -40,6 +33,19 @@ elif command -v shasum >/dev/null 2>&1; then
     SHA_PARSE="awk '{print \$1}'"
 else
     error "Neither sha256sum nor shasum is available."
+    exit 1
+fi
+
+# ---------------------------------------------------------------------------
+# Verify .ti files
+# ---------------------------------------------------------------------------
+if [ ! -d "$TERMINFO_DIR" ]; then
+    error "Directory not found: $TERMINFO_DIR"
+    exit 1
+fi
+
+if [ ! -f "$CHECKSUM_FILE" ]; then
+    error "Checksum file not found: $CHECKSUM_FILE"
     exit 1
 fi
 
@@ -96,9 +102,35 @@ for f in "$TERMINFO_DIR"/*.ti; do
     fi
 done
 
+# ---------------------------------------------------------------------------
+# Verify install.sh
+# ---------------------------------------------------------------------------
+if [ -f "$INSTALL_SH" ] && [ -f "$INSTALL_DATA" ]; then
+    info "Verifying $INSTALL_SH against $INSTALL_DATA ..."
+    EXPECTED_INSTALL="$(sed -n 's/.*"sha256".*: *"\([^"]*\)".*/\1/p' "$INSTALL_DATA")"
+    if [ -z "$EXPECTED_INSTALL" ]; then
+        warn "Could not parse sha256 from $INSTALL_DATA"
+        ERRORS=$((ERRORS + 1))
+    else
+        ACTUAL_INSTALL="$($SHA_CMD "$INSTALL_SH" | eval "$SHA_PARSE")"
+        if [ "$EXPECTED_INSTALL" != "$ACTUAL_INSTALL" ]; then
+            error "install.sh: checksum mismatch"
+            error "  expected: $EXPECTED_INSTALL"
+            error "  actual:   $ACTUAL_INSTALL"
+            error "Regenerate with: contrib/update-install-checksum.sh"
+            ERRORS=$((ERRORS + 1))
+        else
+            info "  OK: install.sh"
+        fi
+    fi
+else
+    warn "Skipping install.sh check (file or data missing)"
+fi
+
 if [ "$ERRORS" -gt 0 ]; then
     error "$ERRORS checksum issue(s) found."
-    error "Regenerate with: cd $TERMINFO_DIR && sha256sum *.ti > checksums.txt"
+    error "Regenerate .ti checksums with: cd $TERMINFO_DIR && sha256sum *.ti > checksums.txt"
+    error "Regenerate install checksum with: contrib/update-install-checksum.sh"
     exit 1
 fi
 

@@ -3,6 +3,7 @@
 # Pre-commit hook: validate terminfo files before commit
 # ------------------------------------------------------------------------------
 # Runs contrib validation checks on staged .ti files and verifies checksums.
+# Also auto-regenerates data/install.json if static/install.sh is staged.
 # Install: cp contrib/pre-commit .git/hooks/pre-commit && chmod +x .git/hooks/pre-commit
 # ------------------------------------------------------------------------------
 
@@ -12,12 +13,21 @@ REPO_ROOT="$(git rev-parse --show-toplevel)"
 CONTRIB_DIR="$REPO_ROOT/contrib"
 
 # Gather staged .ti files
-STAGED_FILES="$(git diff --cached --name-only --diff-filter=ACM | grep '^static/terminfo/.*\.ti$' || true)"
+STAGED_TI="$(git diff --cached --name-only --diff-filter=ACM | grep '^static/terminfo/.*\.ti$' || true)"
+STAGED_INSTALL="$(git diff --cached --name-only --diff-filter=ACM | grep '^static/install\.sh$' || true)"
 
-if [ -z "$STAGED_FILES" ]; then
+# Auto-update install checksum if install.sh is staged
+if [ -n "$STAGED_INSTALL" ]; then
+    printf '[pre-commit] install.sh staged — updating data/install.json\n'
+    "$CONTRIB_DIR/update-install-checksum.sh"
+    git add "$REPO_ROOT/data/install.json"
+    printf '[pre-commit] data/install.json updated and staged\n'
+fi
+
+if [ -z "$STAGED_TI" ]; then
     # No .ti files staged; only run checksum check in case checksums.txt changed
     exec "$CONTRIB_DIR/run-all-checks.sh"
 fi
 
 # Run full suite (checks staged files + global checksum check)
-exec "$CONTRIB_DIR/run-all-checks.sh" $STAGED_FILES
+exec "$CONTRIB_DIR/run-all-checks.sh" $STAGED_TI

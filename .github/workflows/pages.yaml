@@ -36,6 +36,10 @@ jobs:
           hugo-version: ${{ env.HUGO_VERSION }}
           extended: true
 
+      - name: Generate install.sh checksum
+        run: |
+          ./contrib/update-install-checksum.sh
+
       - name: Build with Hugo
         env:
           HUGO_ENVIRONMENT: production

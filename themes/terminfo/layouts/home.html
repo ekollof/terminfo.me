@@ -20,6 +20,12 @@
         The script detects your <code>$TERM</code>, downloads the matching entry, and compiles it with <code>tic</code>.
         <a href="{{ `/install` | relURL }}">Learn more &rarr;</a>
       </p>
+      {{ if hugo.Data.install.sha256 }}
+      <p class="install-checksum">
+        <span class="checksum-label">SHA-256</span>
+        <code class="checksum-value">{{ site.Data.install.sha256 }}</code>
+      </p>
+      {{ end }}
     </div>
 
     <div class="hero-actions">
