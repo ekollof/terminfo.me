@@ -1,0 +1,69 @@
+name: Submit new terminfo entry
+description: Propose a new high-quality terminfo source file
+title: "Add terminfo for: "
+labels: ["new-terminfo"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for contributing! Please fill out the details below.
+
+        Before submitting:
+        - Make sure the file compiles cleanly with `tic -x`
+        - Include a proper header comment (see the [Contribute page](https://terminfo.me/contribute) for the recommended format)
+        - Only submit source `.ti` files (no compiled databases)
+
+  - type: input
+    id: terminal-name
+    attributes:
+      label: Terminal name / $TERM value(s)
+      description: The primary name and any aliases (e.g. "ghostty", "xterm-ghostty")
+      placeholder: "ghostty"
+    validations:
+      required: true
+
+  - type: input
+    id: source-url
+    attributes:
+      label: Source / Reference URL
+      description: Link to the terminal emulator's official terminfo, documentation, or repository
+      placeholder: "https://github.com/ghostty-org/ghostty"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: license
+    attributes:
+      label: License of the terminfo definition
+      options:
+        - MIT
+        - Apache-2.0
+        - GPL-2.0
+        - BSD-3-Clause
+        - Public Domain / Unlicense
+        - Other (please specify below)
+    validations:
+      required: true
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes or special considerations
+      description: Any quirks, additional capabilities, testing notes, or reasons this entry is needed
+      placeholder: "This version adds support for the new 'kitty keyboard protocol' extensions..."
+
+  - type: textarea
+    id: terminfo-content
+    attributes:
+      label: Terminfo source (optional but helpful)
+      description: Paste the full .ti content here if you want early feedback before opening a PR
+      render: text
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Contributor checklist
+      options:
+        - label: I have verified the entry compiles with `tic -x`
+        - label: I have included a proper header comment with source and license
+        - label: This is original or properly licensed work

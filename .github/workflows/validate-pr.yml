@@ -1,0 +1,28 @@
+name: Validate Pull Requests
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install validation dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ncurses-bin
+
+      - name: Run full validation suite
+        run: |
+          ./contrib/run-all-checks.sh
+
+      - name: Success
+        if: success()
+        run: |
+          echo "✅ All validation checks passed!"
