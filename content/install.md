@@ -27,12 +27,26 @@ curl -fsSL https://terminfo.me/install.sh | sh -s -- --verify
 
 ### What the script does
 
-1. Detects your `$TERM` environment variable.
-2. Maps it to a `.ti` file in this collection.
-3. Downloads the source over HTTPS.
-4. Optionally verifies the SHA-256 checksum.
-5. Runs `tic -x -o ~/.terminfo <file.ti>`.
-6. Skips re-installation if the entry is already present and up to date.
+1. **Self-verifies**: Downloads a fresh copy of itself and `install.json`, verifies its own SHA-256, and re-executes the verified copy (unless `--skip-self-check`).
+2. Detects your `$TERM` environment variable.
+3. Maps it to a `.ti` file in this collection.
+4. Downloads the source over HTTPS.
+5. Optionally verifies the SHA-256 checksum of the terminfo file.
+6. Runs `tic -x -o ~/.terminfo <file.ti>`.
+7. Skips re-installation if the entry is already present and up to date.
+
+### Self-verification
+
+Before doing anything else, the script performs a self-check:
+
+- It downloads a fresh copy of `install.sh` and `install.json` from the server.
+- It verifies that the downloaded script's SHA-256 matches the value published in `install.json`.
+- If they match, it re-executes the verified copy and continues.
+- If they don't match (or the download fails), the script aborts with an error.
+
+This protects you in case the `install.sh` file on the server (or in a cache) has been tampered with.
+
+You can bypass the self-check with `--skip-self-check` (not recommended).
 
 ### Safety
 
