@@ -6,7 +6,7 @@
 #   contrib/update-install-checksum.sh
 #
 # Computes the SHA-256 of static/install.sh and writes it to data/install.json
-# so Hugo can read it at render time via .Site.Data.install.sha256
+# so Hugo can read it at render time via hugo.Data.install.sha256
 # -----------------------------------------------------------------------------
 
 set -e

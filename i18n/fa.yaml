@@ -1,0 +1,72 @@
+# Persian (Farsi)
+
+site:
+  title: مجموعه Terminfo
+
+nav:
+  home: خانه
+  browse: مرور Terminfo
+  install: اسکریپت نصب
+  contribute: مشارکت
+  kofi: Ko-fi
+
+home:
+  hero_title: مجموعه‌ای منتخب از ورودی‌های terminfo با کیفیت بالا.
+  hero_lead: قابلیت‌های گمشده، رنگ‌های خراب یا رفتار عجیب کلیدها؟ منبع terminfo مناسب برای ترمینال خود را پیدا کنید و در چند ثانیه با یک فرمان نصب کنید.
+  install_label: نصب با یک خط
+  install_meta: اسکریپت متغیر <code>$TERM</code> شما را تشخیص می‌دهد، ورودی مربوطه را دانلود می‌کند و آن را با <code>tic</code> کامپایل می‌کند.
+  copy: کپی
+  learn_more: بیشتر بدانید →
+  sha256_label: SHA-256
+  browse_button: مرور همه ورودی‌ها
+  contribute_button: مشارکت با یک ورودی
+
+  problem_title: مشکل
+
+  quickstart_title: شروع سریع
+  quickstart_1_title: "۱. ترمینال خود را پیدا کنید"
+  quickstart_1_text: در فهرست قابل مرور، شبیه‌ساز خود را جستجو کنید (مثلاً Alacritty، Kitty، WezTerm).
+  quickstart_2_title: "۲. فرمان یک‌خطی را کپی کنید"
+  quickstart_2_text: فرمان نصب را بچسبانید. به طور خودکار $TERM شما را تشخیص می‌دهد و بقیه را انجام می‌دهد.
+  quickstart_3_title: "۳. انجام شد"
+  quickstart_3_text: اسکریپت فایل منبع .ti را دانلود می‌کند، tic -x را اجرا می‌کند و به طور ایمن در ~/.terminfo نصب می‌کند.
+
+  available_title: ورودی‌های موجود
+  search_placeholder: جستجوی ورودی‌های terminfo...
+  download: دانلود .ti
+  one_liner: یک‌خطی
+
+  terminal_title: user@server ~ ssh
+  terminal_prompt: $ 
+  terminal_cmd: htop
+  terminal_error_prefix: "'"
+  terminal_error_suffix: "': نوع ترمینال ناشناخته."
+  terminal_hint: ترمینال شما مدرن است. پایگاه داده terminfo سرور راه‌دور اینطور نیست.
+
+browse:
+  title: مرور Terminfo
+  intro: همه ورودی‌ها فایل‌های منبع متنی ساده `.ti` هستند که آماده کامپایل با `tic` می‌باشند. جمع‌های کنترل SHA-256 برای تأیید ارائه شده‌اند.
+  contribute_cta: می‌خواهید یک ترمینال گمشده اضافه کنید؟ صفحه [مشارکت](/contribute) را ببینید.
+  search_placeholder: جستجوی ورودی‌های terminfo...
+  download: دانلود
+  one_liner: یک‌خطی
+  no_entries: هنوز ورودی terminfo یافت نشد.
+
+common:
+  copy: کپی
+  copied: کپی شد!
+  sha256: SHA-256
+  lines: خط
+  kb: کیلوبایت
+
+footer:
+  copyright: "© {{ now.Year }} مجموعه Terminfo. تحت مجوز MIT."
+  built_with: "ساخته شده با"
+  hugo: Hugo
+  license: مجوز
+
+install:
+  title: اسکریپت نصب
+
+contribute:
+  title: مشارکت

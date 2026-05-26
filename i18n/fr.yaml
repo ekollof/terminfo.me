@@ -1,0 +1,72 @@
+# French
+
+site:
+  title: Collection Terminfo
+
+nav:
+  home: Accueil
+  browse: Parcourir Terminfo
+  install: Script d'Installation
+  contribute: Contribuer
+  kofi: Ko-fi
+
+home:
+  hero_title: Une collection organisée d'entrées terminfo de haute qualité.
+  hero_lead: Capacités manquantes, couleurs cassées ou comportement étrange des touches ? Trouvez la bonne source terminfo pour votre terminal et installez-la en quelques secondes avec une seule commande.
+  install_label: Installation en une ligne
+  install_meta: Le script détecte votre <code>$TERM</code>, télécharge l'entrée correspondante et la compile avec <code>tic</code>.
+  copy: Copier
+  learn_more: En savoir plus →
+  sha256_label: SHA-256
+  browse_button: Parcourir toutes les entrées
+  contribute_button: Contribuer une entrée
+
+  problem_title: Le problème
+
+  quickstart_title: Démarrage rapide
+  quickstart_1_title: "1. Trouvez votre terminal"
+  quickstart_1_text: Recherchez dans l'index consultable votre émulateur (par ex. Alacritty, Kitty, WezTerm).
+  quickstart_2_title: "2. Copiez la commande en une ligne"
+  quickstart_2_text: Collez la commande d'installation. Elle détecte automatiquement votre $TERM et gère le reste.
+  quickstart_3_title: "3. Terminé"
+  quickstart_3_text: Le script télécharge le fichier source .ti, exécute tic -x et installe en toute sécurité dans ~/.terminfo.
+
+  available_title: Entrées disponibles
+  search_placeholder: Rechercher des entrées terminfo...
+  download: Télécharger .ti
+  one_liner: ligne unique
+
+  terminal_title: user@server ~ ssh
+  terminal_prompt: $ 
+  terminal_cmd: htop
+  terminal_error_prefix: "'"
+  terminal_error_suffix: "': type de terminal inconnu."
+  terminal_hint: Votre terminal est moderne. La base de données terminfo du serveur distant ne l'est pas.
+
+browse:
+  title: Parcourir Terminfo
+  intro: Toutes les entrées sont des fichiers source .ti en texte brut prêts à être compilés avec `tic`. Des sommes de contrôle SHA-256 sont fournies pour vérification.
+  contribute_cta: Vous voulez ajouter un terminal manquant ? Consultez la page [Contribuer](/contribute).
+  search_placeholder: Rechercher des entrées terminfo...
+  download: Télécharger
+  one_liner: ligne unique
+  no_entries: Aucune entrée terminfo trouvée pour le moment.
+
+common:
+  copy: Copier
+  copied: Copié !
+  sha256: SHA-256
+  lines: lignes
+  kb: Ko
+
+footer:
+  copyright: "© {{ now.Year }} Collection Terminfo. Sous licence MIT."
+  built_with: "Construit avec"
+  hugo: Hugo
+  license: Licence
+
+install:
+  title: Script d'Installation
+
+contribute:
+  title: Contribuer

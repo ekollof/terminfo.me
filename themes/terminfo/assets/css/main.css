@@ -153,6 +153,78 @@ a:hover {
   background: var(--accent-dim);
 }
 
+.lang-switcher {
+  font-size: 0.75rem;
+  margin-left: 0.5rem;
+}
+
+.lang-switcher select {
+  background: var(--bg-elevated);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  cursor: pointer;
+  appearance: none;
+}
+.lang-switcher select:hover {
+  border-color: var(--accent);
+}
+.lang-switcher select:focus {
+  border-color: var(--accent);
+  outline: none;
+}
+
+/* Mobile: make language switcher more compact */
+@media (max-width: 480px) {
+  .lang-switcher select {
+    font-size: 0.65rem;
+    padding: 0.2rem 0.35rem;
+  }
+}
+
+/* Browser language suggestion banner */
+.lang-suggest {
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+.lang-suggest strong {
+  color: var(--text-bright);
+}
+.lang-suggest-btn {
+  background: var(--accent);
+  color: #0b0f14;
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: 0.8rem;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.lang-suggest-btn:hover {
+  background: var(--accent-dim);
+}
+.lang-suggest-close {
+  margin-left: auto;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 0 0.3rem;
+  line-height: 1;
+}
+.lang-suggest-close:hover {
+  color: var(--text-bright);
+}
+
 /* ============================================
    Footer
    ============================================ */
@@ -1202,3 +1274,33 @@ a:hover {
     max-width: 720px;
   }
 }
+
+/* RTL support (Arabic and future RTL languages) */
+[dir="rtl"] {
+  text-align: right;
+}
+
+[dir="rtl"] .terminfo-item::before {
+  left: auto;
+  right: 0;
+}
+
+[dir="rtl"] .search-clear {
+  right: auto;
+  left: 0.35rem;
+}
+
+[dir="rtl"] .terminfo-meta {
+  text-align: right;
+}
+
+/* Keep code blocks, terminals, and technical content LTR for readability */
+[dir="rtl"] code,
+[dir="rtl"] pre,
+[dir="rtl"] .terminal-body,
+[dir="rtl"] .code-block,
+[dir="rtl"] .install-box {
+  direction: ltr;
+  text-align: left;
+}
+

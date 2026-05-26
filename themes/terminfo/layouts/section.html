@@ -1,16 +1,17 @@
 {{ define "main" }}
 <section class="content-section">
   <div class="content-inner">
-    <h1>{{ .Title | default "Browse Terminfo Entries" }}</h1>
-    {{ .Content }}
+    <h1>{{ .Title | default (i18n "browse.title") }}</h1>
+    <p>{{ i18n "browse.intro" | markdownify }}</p>
+    <p>{{ i18n "browse.contribute_cta" | markdownify }}</p>
 
     <div class="search-wrapper">
       <input
         type="search"
         id="terminfo-search"
         class="search-bar"
-        placeholder="Search terminfo entries..."
-        aria-label="Search terminfo entries"
+        placeholder="{{ i18n "browse.search_placeholder" }}"
+        aria-label="{{ i18n "browse.search_placeholder" }}"
         autocomplete="off"
       >
     </div>
@@ -46,18 +47,18 @@
               <div class="terminfo-header">
                 <a class="terminfo-name" href="{{ printf `terminfo/%s` .Name | relURL }}">{{ $name }}</a>
                 <div class="terminfo-meta">
-                  <span>{{ len $lines }} lines</span>
+                  <span>{{ len $lines }} {{ i18n "common.lines" | default "lines" }}</span>
                   <span>&middot;</span>
-                  <span>{{ div .Size 1024 }} KB</span>
-                  <a href="{{ printf `terminfo/%s` .Name | relURL }}" download>Download</a>
-                  <button type="button" class="copy-install-btn" data-name="{{ $name }}">one-liner</button>
+                  <span>{{ div .Size 1024 }} {{ i18n "common.kb" | default "KB" }}</span>
+                  <a href="{{ printf `terminfo/%s` .Name | relURL }}" download>{{ i18n "common.download" }}</a>
+                  <button type="button" class="copy-install-btn" data-name="{{ $name }}">{{ i18n "home.one_liner" }}</button>
                 </div>
               </div>
               {{ if $hash }}
               <div class="terminfo-checksum">
-                <span class="checksum-label">SHA-256</span>
+                <span class="checksum-label">{{ i18n "common.sha256" }}</span>
                 <code class="checksum-value">{{ $hash }}</code>
-                <button class="copy-btn" type="button" data-copy-text="{{ $hash }}" aria-label="Copy SHA-256 checksum">Copy</button>
+                <button class="copy-btn" type="button" data-copy-text="{{ $hash }}" aria-label="{{ i18n "common.copy" }} {{ i18n "common.sha256" }}">{{ i18n "common.copy" }}</button>
               </div>
               {{ end }}
               <pre class="terminfo-preview">{{ range $preview }}{{ . }}{{ "\n" }}{{ end }}</pre>
@@ -65,7 +66,7 @@
           {{ end }}
         {{ end }}
       {{ else }}
-        <p>No terminfo entries found yet.</p>
+        <p>{{ i18n "browse.no_entries" | default "No terminfo entries found yet." }}</p>
       {{ end }}
     </ul>
   </div>

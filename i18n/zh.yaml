@@ -1,0 +1,72 @@
+# Chinese (Simplified)
+
+site:
+  title: Terminfo 集合
+
+nav:
+  home: 首页
+  browse: 浏览 Terminfo
+  install: 安装脚本
+  contribute: 贡献
+  kofi: Ko-fi
+
+home:
+  hero_title: 高质量 terminfo 条目的精选集合。
+  hero_lead: 缺少功能、颜色损坏或奇怪的按键行为？ 找到适合您终端的正确 terminfo 源文件，并通过单个命令在几秒钟内安装。
+  install_label: 一行安装
+  install_meta: 该脚本检测您的 <code>$TERM</code>，下载匹配的条目，并使用 <code>tic</code> 编译。
+  copy: 复制
+  learn_more: 了解更多 →
+  sha256_label: SHA-256
+  browse_button: 浏览所有条目
+  contribute_button: 贡献一个条目
+
+  problem_title: 问题
+
+  quickstart_title: 快速开始
+  quickstart_1_title: "1. 找到您的终端"
+  quickstart_1_text: 在可浏览索引中搜索您的模拟器（例如 Alacritty、Kitty、WezTerm）。
+  quickstart_2_title: "2. 复制一行命令"
+  quickstart_2_text: 粘贴安装命令。它会自动检测您的 $TERM 并处理其余部分。
+  quickstart_3_title: "3. 完成"
+  quickstart_3_text: 该脚本下载 .ti 源文件，运行 tic -x，并安全安装到 ~/.terminfo。
+
+  available_title: 可用条目
+  search_placeholder: 搜索 terminfo 条目...
+  download: 下载 .ti
+  one_liner: 一行命令
+
+  terminal_title: user@server ~ ssh
+  terminal_prompt: $ 
+  terminal_cmd: htop
+  terminal_error_prefix: "'"
+  terminal_error_suffix: "'：未知终端类型。"
+  terminal_hint: 您的终端是现代的。远程服务器的 terminfo 数据库不是。
+
+browse:
+  title: 浏览 Terminfo
+  intro: 所有条目都是可使用 `tic` 编译的纯文本 .ti 源文件。提供 SHA-256 校验和用于验证。
+  contribute_cta: 想要添加缺失的终端？请参阅 [贡献](/contribute) 页面。
+  search_placeholder: 搜索 terminfo 条目...
+  download: 下载
+  one_liner: 一行命令
+  no_entries: 尚未找到 terminfo 条目。
+
+common:
+  copy: 复制
+  copied: 已复制！
+  sha256: SHA-256
+  lines: 行
+  kb: KB
+
+footer:
+  copyright: "© {{ now.Year }} Terminfo 集合。采用 MIT 许可。"
+  built_with: "构建工具"
+  hugo: Hugo
+  license: 许可
+
+install:
+  title: 安装脚本
+
+contribute:
+  title: 贡献

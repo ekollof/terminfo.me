@@ -1,0 +1,72 @@
+# Japanese
+
+site:
+  title: Terminfo コレクション
+
+nav:
+  home: ホーム
+  browse: Terminfo を閲覧
+  install: インストールスクリプト
+  contribute: 貢献する
+  kofi: Ko-fi
+
+home:
+  hero_title: 高品質な terminfo エントリのキュレーションコレクション。
+  hero_lead: 機能の欠如、色の破損、奇妙なキー動作でお困りですか？ ターミナル用の正しい terminfo ソースを見つけて、ワンコマンドで数秒でインストールしましょう。
+  install_label: ワンライナーインストール
+  install_meta: このスクリプトは <code>$TERM</code> を検出し、対応するエントリをダウンロードして <code>tic</code> でコンパイルします。
+  copy: コピー
+  learn_more: 詳細を見る →
+  sha256_label: SHA-256
+  browse_button: すべてのエントリを閲覧
+  contribute_button: エントリを貢献する
+
+  problem_title: 問題
+
+  quickstart_title: クイックスタート
+  quickstart_1_title: "1. ターミナルを見つける"
+  quickstart_1_text: "ブラウザブルなインデックスでエミュレータ（例: Alacritty, Kitty, WezTerm）を検索します。"
+  quickstart_2_title: "2. ワンライナーをコピー"
+  quickstart_2_text: "インストールコマンドを貼り付けます。$TERM を自動検出し、残りを処理します。"
+  quickstart_3_title: "3. 完了"
+  quickstart_3_text: "スクリプトは .ti ソースをダウンロードし、tic -x を実行して安全に ~/.terminfo にインストールします。"
+
+  available_title: 利用可能なエントリ
+  search_placeholder: terminfo エントリを検索...
+  download: .ti をダウンロード
+  one_liner: ワンライナー
+
+  terminal_title: user@server ~ ssh
+  terminal_prompt: $ 
+  terminal_cmd: htop
+  terminal_error_prefix: "'"
+  terminal_error_suffix: "': 未知のターミナルタイプ。"
+  terminal_hint: あなたのターミナルはモダンです。リモートサーバーの terminfo データベースはそうではありません。
+
+browse:
+  title: Terminfo を閲覧
+  intro: "すべてのエントリは `tic` でコンパイル可能なプレーンテキストの .ti ソースファイルです。検証用の SHA-256 チェックサムが提供されています。"
+  contribute_cta: "不足しているターミナルを追加したいですか？ [貢献する](/contribute) ページをご覧ください。"
+  search_placeholder: terminfo エントリを検索...
+  download: ダウンロード
+  one_liner: ワンライナー
+  no_entries: まだ terminfo エントリが見つかりません。
+
+common:
+  copy: コピー
+  copied: コピーしました！
+  sha256: SHA-256
+  lines: 行
+  kb: KB
+
+footer:
+  copyright: "© {{ now.Year }} Terminfo コレクション。MIT ライセンス。"
+  built_with: "Built with"
+  hugo: Hugo
+  license: ライセンス
+
+install:
+  title: インストールスクリプト
+
+contribute:
+  title: 貢献する

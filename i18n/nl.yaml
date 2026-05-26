@@ -1,0 +1,72 @@
+# Dutch
+
+site:
+  title: Terminfo-collectie
+
+nav:
+  home: Start
+  browse: Terminfo doorbladeren
+  install: Installatiescript
+  contribute: Bijdragen
+  kofi: Ko-fi
+
+home:
+  hero_title: Een samengestelde collectie van hoogwaardige terminfo-items.
+  hero_lead: Ontbrekende mogelijkheden, kapotte kleuren of vreemd toetsgedrag? Vind de juiste terminfo-bron voor je terminal en installeer deze in seconden met één opdracht.
+  install_label: Installatie met één regel
+  install_meta: Het script detecteert je <code>$TERM</code>, downloadt de bijbehorende vermelding en compileert deze met <code>tic</code>.
+  copy: Kopiëren
+  learn_more: Meer informatie →
+  sha256_label: SHA-256
+  browse_button: Alle vermeldingen doorbladeren
+  contribute_button: Een vermelding bijdragen
+
+  problem_title: Het probleem
+
+  quickstart_title: Snel aan de slag
+  quickstart_1_title: "1. Vind je terminal"
+  quickstart_1_text: Zoek in de doorbladerbare index naar je emulator (bijv. Alacritty, Kitty, WezTerm).
+  quickstart_2_title: "2. Kopieer de éénregelige opdracht"
+  quickstart_2_text: Plak de installatieopdracht. Het detecteert automatisch je $TERM en regelt de rest.
+  quickstart_3_title: "3. Klaar"
+  quickstart_3_text: Het script downloadt het .ti-bronbestand, voert tic -x uit en installeert veilig in ~/.terminfo.
+
+  available_title: Beschikbare vermeldingen
+  search_placeholder: Zoek terminfo-vermeldingen...
+  download: .ti downloaden
+  one_liner: één regel
+
+  terminal_title: user@server ~ ssh
+  terminal_prompt: $ 
+  terminal_cmd: htop
+  terminal_error_prefix: "'"
+  terminal_error_suffix: "': onbekend terminaltype."
+  terminal_hint: Jouw terminal is modern. De terminfo-database van de externe server is dat niet.
+
+browse:
+  title: Terminfo doorbladeren
+  intro: Alle vermeldingen zijn platte tekst `.ti`-bronbestanden die klaar zijn om te compileren met `tic`. SHA-256-controlesommen worden geleverd voor verificatie.
+  contribute_cta: Wil je een ontbrekende terminal toevoegen? Bekijk de pagina [Bijdragen](/contribute).
+  search_placeholder: Zoek terminfo-vermeldingen...
+  download: Downloaden
+  one_liner: één regel
+  no_entries: Nog geen terminfo-vermeldingen gevonden.
+
+common:
+  copy: Kopiëren
+  copied: Gekopieerd!
+  sha256: SHA-256
+  lines: regels
+  kb: KB
+
+footer:
+  copyright: "© {{ now.Year }} Terminfo-collectie. Gelicentieerd onder MIT."
+  built_with: "Gemaakt met"
+  hugo: Hugo
+  license: Licentie
+
+install:
+  title: Installatiescript
+
+contribute:
+  title: Bijdragen

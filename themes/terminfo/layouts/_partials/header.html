@@ -1,14 +1,28 @@
 <div class="header-inner">
   <a class="logo" href="{{ `/` | relURL }}">
     <span class="logo-prompt">$</span>
-    <span class="logo-text">terminfo</span>
+    <span class="logo-text">{{ i18n "site.title" }}</span>
   </a>
   <nav class="main-nav" aria-label="Main">
     {{ range site.Menus.main }}
+      {{ $name := or (i18n .Name) .Name }}
       <a class="nav-link{{ if $.IsMenuCurrent .Menu . }} active{{ end }}"
          href="{{ .URL | relURL }}"
-         {{- if $.IsMenuCurrent .Menu . }} aria-current="page"{{ end }}>{{ .Name }}</a>
+         {{- if $.IsMenuCurrent .Menu . }} aria-current="page"{{ end }}>{{ $name }}</a>
     {{ end }}
-    <a class="nav-btn" href="https://ko-fi.com/andrath" target="_blank" rel="noopener">Ko-fi</a>
+    <a class="nav-btn" href="https://ko-fi.com/andrath" target="_blank" rel="noopener">{{ i18n "nav.kofi" }}</a>
+
+    <!-- Language switcher -->
+    {{ $current := .Site.Language.Lang }}
+    {{ $langNames := dict "en" "🇬🇧 English" "zh" "🇨🇳 中文" "es" "🇪🇸 Español" "ar" "🇸🇦 العربية" "pt" "🇵🇹 Português" "ru" "🇷🇺 Русский" "fr" "🇫🇷 Français" "de" "🇩🇪 Deutsch" "ja" "🇯🇵 日本語" "ko" "🇰🇷 한국어" "fa" "🇮🇷 فارسی" "nl" "🇳🇱 Nederlands" }}
+    <div class="lang-switcher">
+      <select onchange="window.location = this.value;" aria-label="Language">
+        {{ range .AllTranslations }}
+          <option value="{{ .RelPermalink }}" {{ if eq .Lang $current }}selected{{ end }}>
+            {{ index $langNames .Lang | default (.Lang | upper) }}
+          </option>
+        {{ end }}
+      </select>
+    </div>
   </nav>
 </div>

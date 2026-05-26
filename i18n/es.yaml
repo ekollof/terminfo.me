@@ -1,0 +1,72 @@
+# Spanish
+
+site:
+  title: Colección de Terminfo
+
+nav:
+  home: Inicio
+  browse: Explorar Terminfo
+  install: Script de Instalación
+  contribute: Contribuir
+  kofi: Ko-fi
+
+home:
+  hero_title: Una colección curada de entradas de terminfo de alta calidad.
+  hero_lead: ¿Faltan capacidades, colores rotos o comportamiento extraño de teclas? Encuentra la fuente de terminfo correcta para tu terminal e instálala en segundos con un solo comando.
+  install_label: Instalación en una línea
+  install_meta: El script detecta tu <code>$TERM</code>, descarga la entrada correspondiente y la compila con <code>tic</code>.
+  copy: Copiar
+  learn_more: Aprender más →
+  sha256_label: SHA-256
+  browse_button: Explorar todas las entradas
+  contribute_button: Contribuir una entrada
+
+  problem_title: El problema
+
+  quickstart_title: Inicio rápido
+  quickstart_1_title: "1. Encuentra tu terminal"
+  quickstart_1_text: Busca en el índice explorable tu emulador (p. ej., Alacritty, Kitty, WezTerm).
+  quickstart_2_title: "2. Copia la línea de un solo comando"
+  quickstart_2_text: Pega el comando de instalación. Detecta automáticamente tu $TERM y maneja el resto.
+  quickstart_3_title: "3. Listo"
+  quickstart_3_text: El script descarga el archivo .ti fuente, ejecuta tic -x e instala de forma segura en ~/.terminfo.
+
+  available_title: Entradas disponibles
+  search_placeholder: Buscar entradas de terminfo...
+  download: Descargar .ti
+  one_liner: línea única
+
+  terminal_title: user@server ~ ssh
+  terminal_prompt: $ 
+  terminal_cmd: htop
+  terminal_error_prefix: "'"
+  terminal_error_suffix: "': tipo de terminal desconocido."
+  terminal_hint: Tu terminal es moderno. La base de datos de terminfo del servidor remoto no lo es.
+
+browse:
+  title: Explorar Terminfo
+  intro: Todas las entradas son archivos fuente .ti de texto plano listos para compilar con `tic`. Se proporcionan sumas de verificación SHA-256 para verificación.
+  contribute_cta: ¿Quieres agregar una terminal faltante? Consulta la página [Contribuir](/contribute).
+  search_placeholder: Buscar entradas de terminfo...
+  download: Descargar
+  one_liner: línea única
+  no_entries: Aún no se encontraron entradas de terminfo.
+
+common:
+  copy: Copiar
+  copied: ¡Copiado!
+  sha256: SHA-256
+  lines: líneas
+  kb: KB
+
+footer:
+  copyright: "© {{ now.Year }} Colección de Terminfo. Licenciado bajo MIT."
+  built_with: "Construido con"
+  hugo: Hugo
+  license: Licencia
+
+install:
+  title: Script de Instalación
+
+contribute:
+  title: Contribuir

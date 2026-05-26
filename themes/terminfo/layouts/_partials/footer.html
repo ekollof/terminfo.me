@@ -1,10 +1,10 @@
 <div class="footer-inner">
   <p class="footer-copy">
-    &copy; {{ now.Year }} <a href="{{ site.Params.repo }}">Terminfo Collection</a>. Licensed under MIT.
+    &copy; {{ now.Year }} <a href="{{ site.Params.repo }}">{{ i18n "site.title" }}</a>. {{ i18n "footer.license" | default "Licensed under MIT." }}
   </p>
   <p class="footer-meta">
-    Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> &middot;
-    <a href="{{ site.Params.repo }}/blob/main/LICENSE" target="_blank" rel="noopener">License</a> &middot;
-    <a href="https://ko-fi.com/andrath" target="_blank" rel="noopener">Ko-fi</a>
+    {{ i18n "footer.built_with" | default "Built with" }} <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> &middot;
+    <a href="{{ site.Params.repo }}/blob/main/LICENSE" target="_blank" rel="noopener">{{ i18n "footer.license" | default "License" }}</a> &middot;
+    <a href="https://ko-fi.com/andrath" target="_blank" rel="noopener">{{ i18n "nav.kofi" | default "Ko-fi" }}</a>
   </p>
 </div>

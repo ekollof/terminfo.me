@@ -1,6 +1,8 @@
 (function () {
   'use strict';
 
+  'use strict';
+
   // --------------------------------------------------------
   // Typewriter effect for terminal demo
   // --------------------------------------------------------
@@ -184,5 +186,54 @@
     initCopyButtons();
     initSearch();
     initInstallOneLiners();
+
+    // Simple non-intrusive browser language suggestion banner
+    suggestBrowserLanguage();
   });
+
+  function suggestBrowserLanguage() {
+    if (localStorage.getItem('terminfo-lang-suggested')) return;
+
+    const browserLang = (navigator.language || navigator.userLanguage || 'en').split('-')[0].toLowerCase();
+    const supported = ['zh', 'es', 'ar', 'pt', 'ru', 'fr', 'de', 'ja', 'ko', 'fa', 'nl'];
+
+    if (!supported.includes(browserLang)) return;
+
+    // Don't suggest if we're already viewing that language version
+    const pathLang = window.location.pathname.split('/')[1];
+    if (pathLang === browserLang) return;
+
+    const langNames = {
+      'zh': '中文', 'es': 'Español', 'ar': 'العربية', 'pt': 'Português',
+      'ru': 'Русский', 'fr': 'Français', 'de': 'Deutsch', 'ja': '日本語', 'ko': '한국어',
+      'fa': 'فارسی', 'nl': 'Nederlands'
+    };
+
+    const banner = document.createElement('div');
+    banner.className = 'lang-suggest';
+    banner.innerHTML = `
+      <span>🌐 This site is also available in <strong>${langNames[browserLang] || browserLang}</strong>.</span>
+      <a href="/${browserLang}/" class="lang-suggest-btn">Switch</a>
+      <button class="lang-suggest-close" aria-label="Dismiss">×</button>
+    `;
+
+    // Insert after header if possible
+    const header = document.querySelector('.site-header');
+    if (header && header.parentNode) {
+      header.parentNode.insertBefore(banner, header.nextSibling);
+    } else {
+      document.body.prepend(banner);
+    }
+
+    banner.querySelector('.lang-suggest-close').addEventListener('click', () => {
+      banner.remove();
+      localStorage.setItem('terminfo-lang-suggested', '1');
+    });
+
+    // When user clicks Switch, remember the choice
+    banner.querySelector('.lang-suggest-btn').addEventListener('click', () => {
+      localStorage.setItem('terminfo-lang', browserLang);
+    });
+  }
+
 })();

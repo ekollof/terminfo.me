@@ -1,0 +1,73 @@
+# Arabic
+# Note: Site is LTR by default; full RTL support would require additional CSS/HTML dir attributes.
+
+site:
+  title: مجموعة Terminfo
+
+nav:
+  home: الرئيسية
+  browse: تصفح Terminfo
+  install: سكريبت التثبيت
+  contribute: المساهمة
+  kofi: Ko-fi
+
+home:
+  hero_title: مجموعة منتقاة من إدخالات terminfo عالية الجودة.
+  hero_lead: هل تفتقد بعض الإمكانيات، أو ألوان معطلة، أو سلوك غريب للمفاتيح؟ ابحث عن ملف مصدر terminfo الصحيح لطرفيتك وقم بتثبيته في ثوانٍ بأمر واحد.
+  install_label: تثبيت بسطر واحد
+  install_meta: يكتشف البرنامج النصي متغير <code>$TERM</code> الخاص بك، ويُنزّل الإدخال المطابق، ويُصرّفه باستخدام <code>tic</code>.
+  copy: نسخ
+  learn_more: اعرف المزيد ←
+  sha256_label: SHA-256
+  browse_button: تصفح جميع الإدخالات
+  contribute_button: ساهم بإدخال
+
+  problem_title: المشكلة
+
+  quickstart_title: البداية السريعة
+  quickstart_1_title: "1. اعثر على طرفيتك"
+  quickstart_1_text: ابحث في فهرس التصفح عن محاكي الطرفية الخاص بك (مثل Alacritty، Kitty، WezTerm).
+  quickstart_2_title: "2. انسخ أمر السطر الواحد"
+  quickstart_2_text: الصق أمر التثبيت. يكتشف تلقائياً متغير $TERM الخاص بك ويتولى الباقي.
+  quickstart_3_title: "3. تم"
+  quickstart_3_text: يُنزّل البرنامج النصي ملف المصدر .ti، ويشغّل tic -x، ويثبّته بأمان في ~/.terminfo.
+
+  available_title: الإدخالات المتاحة
+  search_placeholder: ابحث في إدخالات terminfo...
+  download: تحميل .ti
+  one_liner: سطر واحد
+
+  terminal_title: user@server ~ ssh
+  terminal_prompt: $ 
+  terminal_cmd: htop
+  terminal_error_prefix: "'"
+  terminal_error_suffix: "': نوع طرفية غير معروف."
+  terminal_hint: طرفيتك حديثة. قاعدة بيانات terminfo على الخادم البعيد ليست كذلك.
+
+browse:
+  title: تصفح Terminfo
+  intro: جميع الإدخالات هي ملفات مصدر `.ti` نص عادي جاهزة للترجمة باستخدام `tic`. يتم توفير مجموعات التحقق SHA-256 للتحقق منها.
+  contribute_cta: هل تريد إضافة طرفية مفقودة؟ راجع صفحة [المساهمة](/contribute).
+  search_placeholder: ابحث في إدخالات terminfo...
+  download: تحميل
+  one_liner: سطر واحد
+  no_entries: لم يتم العثور على إدخالات terminfo بعد.
+
+common:
+  copy: نسخ
+  copied: تم النسخ!
+  sha256: SHA-256
+  lines: أسطر
+  kb: كيلوبايت
+
+footer:
+  copyright: "© {{ now.Year }} مجموعة Terminfo. مرخص بموجب MIT."
+  built_with: "مبني باستخدام"
+  hugo: Hugo
+  license: الترخيص
+
+install:
+  title: سكريبت التثبيت
+
+contribute:
+  title: المساهمة

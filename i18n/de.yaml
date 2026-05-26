@@ -1,0 +1,72 @@
+# German
+
+site:
+  title: Terminfo-Sammlung
+
+nav:
+  home: Start
+  browse: Terminfo durchsuchen
+  install: Installationsskript
+  contribute: Beitragen
+  kofi: Ko-fi
+
+home:
+  hero_title: Eine kuratierte Sammlung hochwertiger Terminfo-Einträge.
+  hero_lead: Fehlende Fähigkeiten, kaputte Farben oder seltsames Tastaturverhalten? Finde die richtige Terminfo-Quelle für dein Terminal und installiere sie in Sekunden mit einem einzigen Befehl.
+  install_label: Einzeiler-Installation
+  install_meta: Das Skript erkennt deine <code>$TERM</code>-Variable, lädt den passenden Eintrag herunter und kompiliert ihn mit <code>tic</code>.
+  copy: Kopieren
+  learn_more: Mehr erfahren →
+  sha256_label: SHA-256
+  browse_button: Alle Einträge durchsuchen
+  contribute_button: Eintrag beitragen
+
+  problem_title: Das Problem
+
+  quickstart_title: Schnellstart
+  quickstart_1_title: "1. Finde dein Terminal"
+  quickstart_1_text: Suche im durchsuchbaren Index nach deinem Emulator (z. B. Alacritty, Kitty, WezTerm).
+  quickstart_2_title: "2. Kopiere den Einzeiler"
+  quickstart_2_text: Füge den Installationsbefehl ein. Er erkennt dein $TERM automatisch und erledigt den Rest.
+  quickstart_3_title: "3. Fertig"
+  quickstart_3_text: Das Skript lädt die .ti-Quelldatei herunter, führt tic -x aus und installiert sie sicher in ~/.terminfo.
+
+  available_title: Verfügbare Einträge
+  search_placeholder: Terminfo-Einträge suchen...
+  download: Download .ti
+  one_liner: Einzeiler
+  terminal_title: user@server ~ ssh
+  terminal_prompt: $ 
+  terminal_cmd: htop
+  terminal_error_prefix: "'"
+  terminal_error_suffix: "': unknown terminal type."
+  terminal_hint: Dein Terminal ist modern. Die Terminfo-Datenbank des Remote-Servers ist es nicht.
+
+browse:
+  title: Terminfo durchsuchen
+  intro: Alle Einträge sind reine Text-.ti-Quelldateien, bereit zur Kompilierung mit `tic`. SHA-256-Prüfsummen werden zur Verifizierung bereitgestellt.
+  contribute_cta: Möchtest du ein fehlendes Terminal hinzufügen? Siehe die [Beitragen](/contribute)-Seite.
+  search_placeholder: Terminfo-Einträge suchen...
+  download: Download
+  one_liner: Einzeiler
+  no_entries: Noch keine Terminfo-Einträge gefunden.
+
+common:
+  copy: Kopieren
+  copied: Kopiert!
+  sha256: SHA-256
+  lines: Zeilen
+  kb: KB
+  terminal_hint: Dein Terminal ist modern. Die Terminfo-Datenbank des Remote-Servers ist es nicht.
+
+footer:
+  copyright: "© {{ now.Year }} Terminfo-Sammlung. Lizenziert unter MIT."
+  built_with: "Erstellt mit"
+  hugo: Hugo
+  license: Lizenz
+
+install:
+  title: Installationsskript
+
+contribute:
+  title: Beitragen

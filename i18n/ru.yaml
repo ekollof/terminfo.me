@@ -1,0 +1,72 @@
+# Russian
+
+site:
+  title: Коллекция Terminfo
+
+nav:
+  home: Главная
+  browse: Обзор Terminfo
+  install: Скрипт установки
+  contribute: Внести вклад
+  kofi: Ko-fi
+
+home:
+  hero_title: Подборка качественных файлов terminfo.
+  hero_lead: Не хватает возможностей, сломанные цвета или странное поведение клавиш? Найдите правильный исходный файл terminfo для вашего терминала и установите его за секунды одной командой.
+  install_label: Установка одной строкой
+  install_meta: Скрипт определяет вашу переменную <code>$TERM</code>, загружает соответствующую запись и компилирует её с помощью <code>tic</code>.
+  copy: Копировать
+  learn_more: Подробнее →
+  sha256_label: SHA-256
+  browse_button: Обзор всех записей
+  contribute_button: Предложить запись
+
+  problem_title: Проблема
+
+  quickstart_title: Быстрый старт
+  quickstart_1_title: "1. Найдите свой терминал"
+  quickstart_1_text: Найдите в просматриваемом индексе ваш эмулятор (например, Alacritty, Kitty, WezTerm).
+  quickstart_2_title: "2. Скопируйте команду одной строкой"
+  quickstart_2_text: Вставьте команду установки. Она автоматически определяет ваш $TERM и выполняет остальное.
+  quickstart_3_title: "3. Готово"
+  quickstart_3_text: Скрипт загружает исходный файл .ti, выполняет tic -x и безопасно устанавливает в ~/.terminfo.
+
+  available_title: Доступные записи
+  search_placeholder: Поиск записей terminfo...
+  download: Скачать .ti
+  one_liner: одной строкой
+
+  terminal_title: user@server ~ ssh
+  terminal_prompt: $ 
+  terminal_cmd: htop
+  terminal_error_prefix: "'"
+  terminal_error_suffix: "': неизвестный тип терминала."
+  terminal_hint: Ваш терминал современный. База данных terminfo на удалённом сервере — нет.
+
+browse:
+  title: Обзор Terminfo
+  intro: Все записи — это обычные текстовые файлы `.ti`, готовые к компиляции с `tic`. Для проверки предоставлены SHA-256 контрольные суммы.
+  contribute_cta: Хотите добавить отсутствующий терминал? См. страницу [Внести вклад](/contribute).
+  search_placeholder: Поиск записей terminfo...
+  download: Скачать
+  one_liner: одной строкой
+  no_entries: Записей terminfo пока нет.
+
+common:
+  copy: Копировать
+  copied: Скопировано!
+  sha256: SHA-256
+  lines: строк
+  kb: КБ
+
+footer:
+  copyright: "© {{ now.Year }} Коллекция Terminfo. Лицензия MIT."
+  built_with: "Собрано с"
+  hugo: Hugo
+  license: Лицензия
+
+install:
+  title: Скрипт установки
+
+contribute:
+  title: Внести вклад

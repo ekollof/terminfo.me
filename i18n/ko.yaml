@@ -1,0 +1,72 @@
+# Korean
+
+site:
+  title: Terminfo 모음
+
+nav:
+  home: 홈
+  browse: Terminfo 찾아보기
+  install: 설치 스크립트
+  contribute: 기여하기
+  kofi: Ko-fi
+
+home:
+  hero_title: 엄선된 고품질 terminfo 항목 모음.
+  hero_lead: 기능이 부족하거나, 색상이 깨지거나, 키 동작이 이상한가요? 터미널에 맞는 올바른 terminfo 소스 파일을 찾아 단일 명령으로 몇 초 만에 설치하세요.
+  install_label: 한 줄 설치
+  install_meta: 이 스크립트는 <code>$TERM</code>을 감지하고, 일치하는 항목을 다운로드한 후 <code>tic</code>로 컴파일합니다.
+  copy: 복사
+  learn_more: 자세히 보기 →
+  sha256_label: SHA-256
+  browse_button: 모든 항목 찾아보기
+  contribute_button: 항목 기여하기
+
+  problem_title: 문제점
+
+  quickstart_title: 빠른 시작
+  quickstart_1_title: "1. 터미널 찾기"
+  quickstart_1_text: "찾아보기 색인에서 에뮬레이터(예: Alacritty, Kitty, WezTerm)를 검색하세요."
+  quickstart_2_title: "2. 한 줄 명령 복사"
+  quickstart_2_text: 설치 명령을 붙여넣으세요. $TERM을 자동 감지하고 나머지를 처리합니다.
+  quickstart_3_title: "3. 완료"
+  quickstart_3_text: 스크립트가 .ti 소스 파일을 다운로드하고, tic -x를 실행한 후 ~/.terminfo에 안전하게 설치합니다.
+
+  available_title: 사용 가능한 항목
+  search_placeholder: terminfo 항목 검색...
+  download: .ti 다운로드
+  one_liner: 한 줄
+
+  terminal_title: user@server ~ ssh
+  terminal_prompt: $ 
+  terminal_cmd: htop
+  terminal_error_prefix: "'"
+  terminal_error_suffix: "': 알 수 없는 터미널 유형입니다."
+  terminal_hint: 사용 중인 터미널은 최신입니다. 원격 서버의 terminfo 데이터베이스는 그렇지 않습니다.
+
+browse:
+  title: Terminfo 찾아보기
+  intro: 모든 항목은 `tic`로 컴파일할 수 있는 일반 텍스트 `.ti` 소스 파일입니다. 검증을 위해 SHA-256 체크섬이 제공됩니다.
+  contribute_cta: 누락된 터미널을 추가하고 싶으신가요? [기여하기](/contribute) 페이지를 참조하세요.
+  search_placeholder: terminfo 항목 검색...
+  download: 다운로드
+  one_liner: 한 줄
+  no_entries: 아직 terminfo 항목이 없습니다.
+
+common:
+  copy: 복사
+  copied: 복사됨!
+  sha256: SHA-256
+  lines: 줄
+  kb: KB
+
+footer:
+  copyright: "© {{ now.Year }} Terminfo 모음. MIT 라이선스."
+  built_with: "빌드 도구"
+  hugo: Hugo
+  license: 라이선스
+
+install:
+  title: 설치 스크립트
+
+contribute:
+  title: 기여하기

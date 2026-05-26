@@ -7,6 +7,8 @@ description: "How to submit a new terminfo entry to the collection via GitHub."
 
 We welcome high-quality terminfo source files for terminals that are missing from the system ncurses database or that have better/more complete definitions.
 
+**Language note:** Please write issue descriptions, pull requests, and comments in English. This helps the maintainers review contributions efficiently.
+
 ### Quick Start (Recommended)
 
 The easiest way to contribute is to **open an issue** first:

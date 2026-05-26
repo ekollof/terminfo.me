@@ -1,61 +1,60 @@
 {{ define "main" }}
 <section class="hero">
   <div class="hero-inner">
-    <h1>A curated collection of high-quality terminfo entries.</h1>
+    <h1>{{ i18n "home.hero_title" }}</h1>
     <p class="lead">
-      Missing capabilities, broken colors, or strange key behavior? Find the correct
-      terminfo source for your terminal and install it in seconds with a single command.
+      {{ i18n "home.hero_lead" }}
     </p>
 
     <div class="install-box" id="install-box">
       <div class="install-label">
         <span class="dot"></span>
-        <span class="install-label-text">One-liner install</span>
+        <span class="install-label-text">{{ i18n "home.install_label" }}</span>
       </div>
       <div class="code-block">
         <code>curl -fsSL {{ site.Params.domain }}/install.sh | sh</code>
-        <button class="copy-btn" type="button" aria-label="Copy to clipboard">Copy</button>
+        <button class="copy-btn" type="button" aria-label="{{ i18n "common.copy" }}">{{ i18n "common.copy" }}</button>
       </div>
       <p class="install-meta">
-        The script detects your <code>$TERM</code>, downloads the matching entry, and compiles it with <code>tic</code>.
-        <a href="{{ `/install` | relURL }}">Learn more &rarr;</a>
+        {{ (i18n "home.install_meta" | default "The script detects your <code>$TERM</code>, downloads the matching entry, and compiles it with <code>tic</code>.") | safeHTML }}
+        <a href="{{ `/install` | relURL }}">{{ i18n "home.learn_more" }}</a>
       </p>
       {{ if hugo.Data.install.sha256 }}
       <p class="install-checksum">
-        <span class="checksum-label">SHA-256</span>
-        <code class="checksum-value">{{ site.Data.install.sha256 }}</code>
+        <span class="checksum-label">{{ i18n "common.sha256" }}</span>
+        <code class="checksum-value">{{ hugo.Data.install.sha256 }}</code>
       </p>
       {{ end }}
     </div>
 
     <div class="hero-actions">
-      <a href="{{ `terminfo` | relURL }}" class="btn btn-primary">Browse all entries</a>
-      <a href="{{ `/contribute` | relURL }}" class="btn btn-ghost">Contribute an entry</a>
+      <a href="{{ `terminfo` | relURL }}" class="btn btn-primary">{{ i18n "home.browse_button" }}</a>
+      <a href="{{ `/contribute` | relURL }}" class="btn btn-ghost">{{ i18n "home.contribute_button" }}</a>
     </div>
   </div>
 </section>
 
 <section class="problem-section">
   <div class="problem-inner">
-    <h2 class="section-title"><span>&rsaquo;</span> The problem</h2>
+    <h2 class="section-title"><span>&rsaquo;</span> {{ i18n "home.problem_title" }}</h2>
     <div class="terminal-box">
       <div class="terminal-header">
         <span class="terminal-dot red"></span>
         <span class="terminal-dot yellow"></span>
         <span class="terminal-dot green"></span>
-        <span class="terminal-title">user@server ~ ssh</span>
+        <span class="terminal-title">{{ i18n "home.terminal_title" | default "user@server ~ ssh" }}</span>
       </div>
       <div class="terminal-body">
         <div class="terminal-line">
-          <span class="terminal-prompt">$ </span>
+          <span class="terminal-prompt">{{ i18n "home.terminal_prompt" | default "$ " }}</span>
           <span class="terminal-cmd">htop</span>
         </div>
         <div class="terminal-line error">
-          <span class="type-text">'<span class="type-target" data-terms="xterm-kitty,xterm-ghostty,alacritty,wezterm,foot,kitty"></span>': unknown terminal type.</span>
+          <span class="type-text">{{ i18n "home.terminal_error_prefix" | default "'" }}<span class="type-target" data-terms="xterm-kitty,xterm-ghostty,alacritty,wezterm,foot,kitty"></span>{{ i18n "home.terminal_error_suffix" | default "': unknown terminal type." }}</span>
           <span class="type-cursor">_</span>
         </div>
         <div class="terminal-line hint">
-          Your terminal is modern. The remote server's terminfo database isn't.
+          {{ i18n "home.terminal_hint" | default "Your terminal is modern. The remote server's terminfo database isn't." }}
         </div>
       </div>
     </div>
@@ -64,19 +63,19 @@
 
 <section class="cards-section">
   <div class="cards-inner">
-    <h2 class="section-title"><span>&rsaquo;</span> Quick start</h2>
+    <h2 class="section-title"><span>&rsaquo;</span> {{ i18n "home.quickstart_title" }}</h2>
     <div class="cards-grid">
       <div class="card">
-        <h3>1. Find your terminal</h3>
-        <p>Search the browsable index for your emulator (e.g., Alacritty, Kitty, WezTerm).</p>
+        <h3>{{ i18n "home.quickstart_1_title" }}</h3>
+        <p>{{ i18n "home.quickstart_1_text" }}</p>
       </div>
       <div class="card">
-        <h3>2. Copy the one-liner</h3>
-        <p>Paste the install command. It auto-detects your $TERM and handles the rest.</p>
+        <h3>{{ i18n "home.quickstart_2_title" }}</h3>
+        <p>{{ i18n "home.quickstart_2_text" }}</p>
       </div>
       <div class="card">
-        <h3>3. Done</h3>
-        <p>The script downloads the .ti source, runs tic -x, and installs to ~/.terminfo safely.</p>
+        <h3>{{ i18n "home.quickstart_3_title" }}</h3>
+        <p>{{ i18n "home.quickstart_3_text" }}</p>
       </div>
     </div>
   </div>
@@ -84,14 +83,14 @@
 
 <section class="browse-section">
   <div class="browse-inner">
-    <h2 class="section-title"><span>&rsaquo;</span> Available entries</h2>
+    <h2 class="section-title"><span>&rsaquo;</span> {{ i18n "home.available_title" }}</h2>
     <div class="search-wrapper">
       <input
         type="search"
         id="terminfo-search"
         class="search-bar"
-        placeholder="Search terminfo entries..."
-        aria-label="Search terminfo entries"
+        placeholder="{{ i18n "home.search_placeholder" }}"
+        aria-label="{{ i18n "home.search_placeholder" }}"
         autocomplete="off"
       >
     </div>
@@ -126,16 +125,16 @@
               <div class="terminfo-header">
                 <span class="terminfo-name">{{ $name }}</span>
                 <div class="terminfo-meta">
-                  <span class="badge">{{ len $lines }} lines</span>
-                  <a href="{{ printf `terminfo/%s` .Name | relURL }}" download>Download .ti</a>
-                  <button type="button" class="copy-install-btn" data-name="{{ $name }}">one-liner</button>
+                  <span class="badge">{{ len $lines }} {{ i18n "common.lines" | default "lines" }}</span>
+                  <a href="{{ printf `terminfo/%s` .Name | relURL }}" download>{{ i18n "common.download" }}</a>
+                  <button type="button" class="copy-install-btn" data-name="{{ $name }}">{{ i18n "home.one_liner" }}</button>
                 </div>
               </div>
               {{ if $hash }}
               <div class="terminfo-checksum">
-                <span class="checksum-label">SHA-256</span>
+                <span class="checksum-label">{{ i18n "common.sha256" }}</span>
                 <code class="checksum-value">{{ $hash }}</code>
-                <button class="copy-btn" type="button" data-copy-text="{{ $hash }}" aria-label="Copy SHA-256 checksum">Copy</button>
+                <button class="copy-btn" type="button" data-copy-text="{{ $hash }}" aria-label="{{ i18n "common.copy" }} {{ i18n "common.sha256" }}">{{ i18n "common.copy" }}</button>
               </div>
               {{ end }}
               <pre class="terminfo-preview">{{ range $preview }}{{ . }}{{ "\n" }}{{ end }}</pre>

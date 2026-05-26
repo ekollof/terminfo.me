@@ -1,0 +1,72 @@
+# English (default)
+
+site:
+  title: Terminfo Collection
+
+nav:
+  home: Home
+  browse: Browse Terminfo
+  install: Install Script
+  contribute: Contribute
+  kofi: Ko-fi
+
+home:
+  hero_title: A curated collection of high-quality terminfo entries.
+  hero_lead: Missing capabilities, broken colors, or strange key behavior? Find the correct terminfo source for your terminal and install it in seconds with a single command.
+  install_label: One-liner install
+  install_meta: The script detects your <code>$TERM</code>, downloads the matching entry, and compiles it with <code>tic</code>.
+  copy: Copy
+  learn_more: Learn more →
+  sha256_label: SHA-256
+  browse_button: Browse all entries
+  contribute_button: Contribute an entry
+
+  problem_title: The problem
+
+  quickstart_title: Quick start
+  quickstart_1_title: "1. Find your terminal"
+  quickstart_1_text: Search the browsable index for your emulator (e.g., Alacritty, Kitty, WezTerm).
+  quickstart_2_title: "2. Copy the one-liner"
+  quickstart_2_text: Paste the install command. It auto-detects your $TERM and handles the rest.
+  quickstart_3_title: "3. Done"
+  quickstart_3_text: The script downloads the .ti source, runs tic -x, and installs to ~/.terminfo safely.
+
+  available_title: Available entries
+  search_placeholder: Search terminfo entries...
+  download: Download .ti
+  one_liner: one-liner
+  terminal_title: user@server ~ ssh
+  terminal_prompt: $ 
+  terminal_cmd: htop
+  terminal_error_prefix: "'"
+  terminal_error_suffix: "': unknown terminal type."
+  terminal_hint: Your terminal is modern. The remote server's terminfo database isn't.
+
+browse:
+  title: Browse Terminfo
+  intro: All entries are plain-text `.ti` source files ready to compile with `tic`. SHA-256 checksums are provided for verification.
+  contribute_cta: Want to add a missing terminal? See the [Contribute](/contribute) page.
+  search_placeholder: Search terminfo entries...
+  download: Download
+  one_liner: one-liner
+  no_entries: No terminfo entries found yet.
+
+common:
+  copy: Copy
+  copied: Copied!
+  sha256: SHA-256
+  lines: lines
+  kb: KB
+  terminal_hint: Your terminal is modern. The remote server's terminfo database isn't.
+
+footer:
+  copyright: "© {{ now.Year }} Terminfo Collection. Licensed under MIT."
+  built_with: "Built with"
+  hugo: Hugo
+  license: License
+
+install:
+  title: Install Script
+
+contribute:
+  title: Contribute

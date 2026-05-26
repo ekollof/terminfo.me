@@ -1,31 +1,90 @@
 baseURL = 'https://terminfo.me/'
-locale = 'en-us'
 title = 'Terminfo Collection'
 theme = 'terminfo'
+
+defaultContentLanguage = "en"
+defaultContentLanguageInSubdir = false
+
+[languages]
+  [languages.en]
+    label = "English"
+    locale = "en"
+    contentDir = "content/en"
+    weight = 1
+
+  [languages.zh]
+    label = "中文"
+    locale = "zh"
+    contentDir = "content/zh"
+    weight = 2
+
+  [languages.es]
+    label = "Español"
+    locale = "es"
+    contentDir = "content/es"
+    weight = 3
+
+  [languages.ar]
+    label = "العربية"
+    locale = "ar"
+    contentDir = "content/ar"
+    direction = "rtl"
+    weight = 4
+
+  [languages.pt]
+    label = "Português"
+    locale = "pt"
+    contentDir = "content/pt"
+    weight = 5
+
+  [languages.ru]
+    label = "Русский"
+    locale = "ru"
+    contentDir = "content/ru"
+    weight = 6
+
+  [languages.fr]
+    label = "Français"
+    locale = "fr"
+    contentDir = "content/fr"
+    weight = 7
+
+  [languages.de]
+    label = "Deutsch"
+    locale = "de"
+    contentDir = "content/de"
+    weight = 8
+
+  [languages.ja]
+    label = "日本語"
+    locale = "ja"
+    contentDir = "content/ja"
+    weight = 9
+
+  [languages.ko]
+    label = "한국어"
+    locale = "ko"
+    contentDir = "content/ko"
+    weight = 10
+
+  [languages.fa]
+    label = "فارسی"
+    locale = "fa"
+    contentDir = "content/fa"
+    direction = "rtl"
+    weight = 11
+
+  [languages.nl]
+    label = "Nederlands"
+    locale = "nl"
+    contentDir = "content/nl"
+    weight = 12
 
 [params]
   description = "A curated, public collection of high-quality terminfo source files. Find and install the perfect terminfo entry for your terminal."
   author = "Terminfo Collection Contributors"
   repo = "https://github.com/ekollof/terminfo.me"
   domain = "https://terminfo.me"
-
-[menu]
-  [[menu.main]]
-    name = 'Home'
-    pageRef = '/'
-    weight = 10
-  [[menu.main]]
-    name = 'Browse Terminfo'
-    pageRef = '/terminfo'
-    weight = 20
-  [[menu.main]]
-    name = 'Install Script'
-    pageRef = '/install'
-    weight = 30
-  [[menu.main]]
-    name = 'Contribute'
-    pageRef = '/contribute'
-    weight = 40
 
 [imaging]
   quality = 75
@@ -34,3 +93,21 @@ theme = 'terminfo'
   home = ['HTML']
   section = ['HTML']
   page = ['HTML']
+
+[menu]
+  [[menu.main]]
+    name = "nav.home"
+    pageRef = "/"
+    weight = 10
+  [[menu.main]]
+    name = "nav.browse"
+    pageRef = "/terminfo"
+    weight = 20
+  [[menu.main]]
+    name = "nav.install"
+    pageRef = "/install"
+    weight = 30
+  [[menu.main]]
+    name = "nav.contribute"
+    pageRef = "/contribute"
+    weight = 40
