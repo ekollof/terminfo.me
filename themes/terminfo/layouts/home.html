@@ -85,14 +85,16 @@
 <section class="browse-section">
   <div class="browse-inner">
     <h2 class="section-title"><span>&rsaquo;</span> Available entries</h2>
-    <input
-      type="search"
-      id="terminfo-search"
-      class="search-bar"
-      placeholder="Search terminfo entries..."
-      aria-label="Search terminfo entries"
-      autocomplete="off"
-    >
+    <div class="search-wrapper">
+      <input
+        type="search"
+        id="terminfo-search"
+        class="search-bar"
+        placeholder="Search terminfo entries..."
+        aria-label="Search terminfo entries"
+        autocomplete="off"
+      >
+    </div>
     <ul class="terminfo-list" id="terminfo-list">
       {{ $dir := "static/terminfo" }}
       {{ if (fileExists $dir) }}
@@ -109,6 +111,7 @@
                 <div class="terminfo-meta">
                   <span class="badge">{{ len $lines }} lines</span>
                   <a href="{{ printf `terminfo/%s` .Name | relURL }}" download>Download .ti</a>
+                  <button type="button" class="copy-install-btn" data-name="{{ $name }}">one-liner</button>
                 </div>
               </div>
               <pre class="terminfo-preview">{{ range $preview }}{{ . }}{{ "\n" }}{{ end }}</pre>

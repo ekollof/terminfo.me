@@ -5,7 +5,9 @@
   </a>
   <nav class="main-nav" aria-label="Main">
     {{ range site.Menus.main }}
-      <a class="nav-link{{ if $.IsMenuCurrent .Menu . }} active{{ end }}" href="{{ .URL | relURL }}">{{ .Name }}</a>
+      <a class="nav-link{{ if $.IsMenuCurrent .Menu . }} active{{ end }}"
+         href="{{ .URL | relURL }}"
+         {{- if $.IsMenuCurrent .Menu . }} aria-current="page"{{ end }}>{{ .Name }}</a>
     {{ end }}
     <a class="nav-btn" href="https://ko-fi.com/andrath" target="_blank" rel="noopener">Ko-fi</a>
   </nav>

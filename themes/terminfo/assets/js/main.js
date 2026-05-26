@@ -12,6 +12,16 @@
     const terms = raw.split(',').filter(Boolean);
     if (!terms.length) return;
 
+    // Respect reduced motion: show static first term, no animation or blinking cursor
+    const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReduced) {
+      target.textContent = terms[0];
+      // Hide the blinking cursor element if present (CSS also disables animation)
+      const cursor = document.querySelector('.type-cursor');
+      if (cursor) cursor.style.display = 'none';
+      return;
+    }
+
     let termIndex = 0;
     let charIndex = 0;
     let isDeleting = false;
@@ -69,7 +79,7 @@
   }
 
   // --------------------------------------------------------
-  // Live search on terminfo list
+  // Live search on terminfo list (enhanced with clear, count, empty state)
   // --------------------------------------------------------
   function initSearch() {
     const input = document.getElementById('terminfo-search');
@@ -77,14 +87,84 @@
     if (!input || !list) return;
 
     const items = list.querySelectorAll('.terminfo-item');
+    const total = items.length;
 
-    input.addEventListener('input', () => {
+    // Find or create wrapper (we added .search-wrapper in templates for positioning)
+    const wrapper = input.closest('.search-wrapper') || input.parentElement;
+
+    // Create + inject clear button
+    const clearBtn = document.createElement('button');
+    clearBtn.type = 'button';
+    clearBtn.className = 'search-clear';
+    clearBtn.setAttribute('aria-label', 'Clear search');
+    clearBtn.textContent = '×';
+    wrapper.appendChild(clearBtn);
+
+    // Create status line (count / empty help)
+    const status = document.createElement('p');
+    status.className = 'search-status';
+    status.setAttribute('aria-live', 'polite');
+    // Insert after the wrapper (before the list)
+    wrapper.after(status);
+
+    function updateSearch() {
       const q = input.value.toLowerCase().trim();
+      let visible = 0;
+
       items.forEach(item => {
         const name = item.dataset.name || '';
         const text = item.textContent.toLowerCase();
         const match = !q || name.includes(q) || text.includes(q);
         item.classList.toggle('hidden', !match);
+        if (match) visible++;
+      });
+
+      // Clear button visibility
+      clearBtn.style.display = q ? 'block' : 'none';
+
+      // Status text
+      if (!q) {
+        status.textContent = '';
+        status.style.display = 'none';
+      } else if (visible === 0) {
+        status.innerHTML = `No matches for <strong>${q}</strong>. Try a terminal name like <em>kitty</em> or <em>alacritty</em>.`;
+        status.style.display = 'block';
+      } else {
+        status.textContent = `${visible} of ${total} entries`;
+        status.style.display = 'block';
+      }
+    }
+
+    input.addEventListener('input', updateSearch);
+
+    clearBtn.addEventListener('click', () => {
+      input.value = '';
+      updateSearch();
+      input.focus();
+    });
+
+    // Initial state
+    updateSearch();
+  }
+
+  // --------------------------------------------------------
+  // Per-entry "install one-liner" copy buttons in lists
+  // --------------------------------------------------------
+  function initInstallOneLiners() {
+    const base = 'curl -fsSL https://terminfo.me/install.sh | sh -s --';
+    document.querySelectorAll('.copy-install-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const name = btn.dataset.name || '';
+        const cmd = `${base} ${name}`;
+        navigator.clipboard.writeText(cmd).then(() => {
+          const orig = btn.textContent;
+          btn.textContent = 'copied!';
+          btn.classList.add('copied');
+          setTimeout(() => {
+            btn.textContent = orig;
+            btn.classList.remove('copied');
+          }, 1400);
+        });
       });
     });
   }
@@ -96,5 +176,6 @@
     initTypewriter();
     initCopyButtons();
     initSearch();
+    initInstallOneLiners();
   });
 })();
