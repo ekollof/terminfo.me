@@ -63,9 +63,16 @@
   function initCopyButtons() {
     document.querySelectorAll('.copy-btn').forEach(btn => {
       btn.addEventListener('click', () => {
-        const target = btn.closest('.code-block')?.querySelector('code');
-        if (!target) return;
-        navigator.clipboard.writeText(target.textContent).then(() => {
+        let textToCopy = btn.dataset.copyText;
+
+        if (!textToCopy) {
+          const target = btn.closest('.code-block')?.querySelector('code');
+          if (target) textToCopy = target.textContent;
+        }
+
+        if (!textToCopy) return;
+
+        navigator.clipboard.writeText(textToCopy).then(() => {
           const original = btn.textContent;
           btn.textContent = 'Copied!';
           btn.classList.add('copied');

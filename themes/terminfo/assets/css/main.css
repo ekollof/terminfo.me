@@ -709,6 +709,45 @@ a:hover {
   color: var(--text-muted);
 }
 
+.terminfo-checksum {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  padding: 0 0.9rem 0.55rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  border-top: 1px solid var(--border);
+}
+
+.terminfo-checksum .checksum-label {
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.62rem;
+  color: var(--text-muted);
+}
+
+.terminfo-checksum .checksum-value {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.08rem 0.35rem;
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  color: var(--text-bright);
+  word-break: break-all;
+}
+
+.terminfo-checksum .copy-btn {
+  font-size: 0.62rem;
+  padding: 0.08rem 0.3rem;
+  border-color: transparent;
+  margin-left: 0.25rem;
+}
+.terminfo-checksum .copy-btn:hover {
+  border-color: var(--accent);
+}
+
 .terminfo-preview {
   background: var(--bg-code);
   border-top: 1px solid var(--border);

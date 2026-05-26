@@ -98,6 +98,22 @@
     <ul class="terminfo-list" id="terminfo-list">
       {{ $dir := "static/terminfo" }}
       {{ if (fileExists $dir) }}
+        {{/* Build a map of filename -> SHA-256 hash from checksums.txt */}}
+        {{ $checksums := dict }}
+        {{ with readFile "static/terminfo/checksums.txt" }}
+          {{ range split . "\n" }}
+            {{ $line := trim . " " }}
+            {{ if ne $line "" }}
+              {{ $parts := split $line "  " }}
+              {{ if eq (len $parts) 2 }}
+                {{ $hash := index $parts 0 }}
+                {{ $file := index $parts 1 }}
+                {{ $checksums = merge $checksums (dict $file $hash) }}
+              {{ end }}
+            {{ end }}
+          {{ end }}
+        {{ end }}
+
         {{ range (readDir $dir) }}
           {{ if strings.HasSuffix .Name ".ti" }}
             {{ $path := printf "static/terminfo/%s" .Name }}
@@ -105,6 +121,7 @@
             {{ $lines := split $content "\n" }}
             {{ $preview := first 6 $lines }}
             {{ $name := strings.TrimSuffix ".ti" .Name }}
+            {{ $hash := index $checksums .Name }}
             <li class="terminfo-item" data-name="{{ $name | lower }}">
               <div class="terminfo-header">
                 <span class="terminfo-name">{{ $name }}</span>
@@ -114,6 +131,13 @@
                   <button type="button" class="copy-install-btn" data-name="{{ $name }}">one-liner</button>
                 </div>
               </div>
+              {{ if $hash }}
+              <div class="terminfo-checksum">
+                <span class="checksum-label">SHA-256</span>
+                <code class="checksum-value">{{ $hash }}</code>
+                <button class="copy-btn" type="button" data-copy-text="{{ $hash }}" aria-label="Copy SHA-256 checksum">Copy</button>
+              </div>
+              {{ end }}
               <pre class="terminfo-preview">{{ range $preview }}{{ . }}{{ "\n" }}{{ end }}</pre>
             </li>
           {{ end }}
