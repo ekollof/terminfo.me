@@ -24,15 +24,22 @@ info()  { printf '[%s] %s\n' "$PROG" "$*"; }
 error() { printf '[%s] ERROR: %s\n' "$PROG" "$*" >&2; }
 warn()  { printf '[%s] WARN: %s\n' "$PROG" "$*" >&2; }
 
-# Determine sha256 command
+# Determine sha256 command (portable across Linux, macOS, *BSD)
 if command -v sha256sum >/dev/null 2>&1; then
     SHA_CMD="sha256sum"
     SHA_PARSE="awk '{print \$1}'"
 elif command -v shasum >/dev/null 2>&1; then
     SHA_CMD="shasum -a 256"
     SHA_PARSE="awk '{print \$1}'"
+elif command -v sha256 >/dev/null 2>&1; then
+    # OpenBSD, FreeBSD, NetBSD
+    SHA_CMD="sha256 -q"
+    SHA_PARSE="cat"
+elif command -v openssl >/dev/null 2>&1; then
+    SHA_CMD="openssl dgst -sha256"
+    SHA_PARSE="awk '{print \$NF}'"
 else
-    error "Neither sha256sum nor shasum is available."
+    error "No SHA-256 utility found (tried: sha256sum, shasum, sha256, openssl)."
     exit 1
 fi
 

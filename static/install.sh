@@ -4,6 +4,8 @@
 # A safe, idempotent companion script for installing terminfo entries
 # from https://terminfo.me
 # POSIX-compliant so it runs under any /bin/sh (bash, dash, ksh, etc.)
+# Supports: Linux (sha256sum), macOS (shasum), OpenBSD/FreeBSD (sha256),
+#           and openssl dgst as a portable fallback.
 # -----------------------------------------------------------------------------
 
 set -eu
@@ -95,15 +97,22 @@ require_cmd() {
 }
 
 # ---------------------------------------------------------------------------
-# Compute SHA-256 checksum of a file
+# Compute SHA-256 checksum of a file (portable across Linux, macOS, *BSD)
 # ---------------------------------------------------------------------------
 sha256_file() {
     if command -v sha256sum >/dev/null 2>&1; then
         sha256sum "$1" | awk '{print $1}'
     elif command -v shasum >/dev/null 2>&1; then
         shasum -a 256 "$1" | awk '{print $1}'
+    elif command -v sha256 >/dev/null 2>&1; then
+        # OpenBSD, FreeBSD, NetBSD
+        sha256 -q "$1"
+    elif command -v openssl >/dev/null 2>&1; then
+        # Last resort: works on virtually everything (including OpenBSD)
+        openssl dgst -sha256 "$1" | awk '{print $NF}'
     else
-        error "Neither sha256sum nor shasum is available."
+        error "No SHA-256 utility found."
+        error "Tried: sha256sum, shasum, sha256, openssl dgst"
         exit 1
     fi
 }
