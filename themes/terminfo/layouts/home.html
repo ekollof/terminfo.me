@@ -17,7 +17,7 @@
       </div>
       <p class="install-meta">
         {{ (i18n "home.install_meta" | default "The script detects your <code>$TERM</code>, downloads the matching entry, and compiles it with <code>tic</code>.") | safeHTML }}
-        <a href="{{ `/install` | relURL }}">{{ i18n "home.learn_more" }}</a>
+        <a href="{{ `/install` | relLangURL }}">{{ i18n "home.learn_more" }}</a>
       </p>
       {{ if hugo.Data.install.sha256 }}
       <p class="install-checksum">
@@ -28,8 +28,8 @@
     </div>
 
     <div class="hero-actions">
-      <a href="{{ `terminfo` | relURL }}" class="btn btn-primary">{{ i18n "home.browse_button" }}</a>
-      <a href="{{ `/contribute` | relURL }}" class="btn btn-ghost">{{ i18n "home.contribute_button" }}</a>
+      <a href="{{ `terminfo` | relLangURL }}" class="btn btn-primary">{{ i18n "home.browse_button" }}</a>
+      <a href="{{ `/contribute` | relLangURL }}" class="btn btn-ghost">{{ i18n "home.contribute_button" }}</a>
     </div>
   </div>
 </section>
